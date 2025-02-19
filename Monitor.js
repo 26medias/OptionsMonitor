@@ -12,8 +12,8 @@ const MS_DAY = MS_HOUR*24;
 class Monitor {
     constructor(data_dir) {
         this.data_dir = data_dir;
-        this.watchlist = new Watchlist(this.data_dir);
-        this.stock = new StockData(this.data_dir);
+        this.watchlist = new Watchlist(this.data_dir+"/watchlist");
+        this.stock = new StockData(this.data_dir+"/stock");
         this.options = new Options();
     }
 
@@ -35,7 +35,7 @@ class Monitor {
     async getOptions(ticker, strikeWithinPercent=10, maxPercentPerDay=2, minDaysAway=10) {
         const scope = this;
         let output = [];
-        const data = await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*10)), true);
+        const data = await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*10)), false);
         const last = data[ticker][data[ticker].length-1];
         //return last
         let expirations = await this.options.getExpirations(ticker);
@@ -86,7 +86,7 @@ class Monitor {
             return a.price > b.price ? 1 : -1;
         })
     
-        this.write(`options/${ticker}-within-${strikeWithinPercent}-of-${last.close.toFixed(2)}.json`, output);
+        this.write(`options/${ticker}-within-${strikeWithinPercent}.json`, output);
         return output;
     }
                         
@@ -193,13 +193,14 @@ class Monitor {
 module.exports = Monitor;
 /*
 
+*/
 const main = async () => {
     const monitor = new Monitor("./data/")
-    let options = await monitor.getOptions("DELL", 20, 160);
+    let options = await monitor.getOptions("DGLY", 20, 160);
     options.sort((a, b) => {
         return a.price > b.price;
     })
-    //console.log(options.slice(0, 20));
+    console.log(options.slice(0, 20))
     cheapest = options[0];
     console.log(`Cheapest option: $${cheapest.pricePerContract}`)
     console.log(cheapest)
@@ -210,4 +211,3 @@ const main = async () => {
 }
 
 main();
-*/

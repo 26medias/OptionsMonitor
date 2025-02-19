@@ -11,7 +11,9 @@
   "dependencies": {
     "axios": "^1.7.9",
     "humanize-duration": "^3.32.1",
+    "progress": "^2.0.3",
     "pstack": "^0.1.5",
+    "table": "^6.9.0",
     "underscore": "^1.13.7"
   }
 }

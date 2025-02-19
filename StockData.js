@@ -104,7 +104,7 @@ class StockData {
         const toMs = Date.now();
 
         const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${fromMs}/${toMs}?apiKey=${this.apiKey}`;
-        console.log('Fetching data from', url);
+        //console.log('Fetching data from', url);
 
         try {
             const resp = await axios.get(url);
@@ -142,7 +142,7 @@ class StockData {
         const stack = new pstack({
             async: true,
             batch: 5,
-            progress: "Downloading the data..."
+            progress: tickers.length > 1 ? "Downloading the data..." : false
         });
 
         tickers.forEach(ticker => {
