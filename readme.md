@@ -46,6 +46,25 @@ API:
 
 Questions it needs to answer:
 - What is the state of the market right now?
-- What are the cheap options for a symbol
+- [x] What are the cheap options for a symbol
 - Symbol snapshop
+    Needs:
+    
+    - [x] Stock data
+    - [x] Indicator data
+    - [x] Reddit data
+    - [x] News
+    - [x] Options
+
+    Displays:
+    - [ ] Price
+    - [ ] Indicators
+    - [ ] Price context (week change, ...)
+    - [ ] Reddit stats
+    - [ ] News stats
+    - [ ] News summary
+    - [ ] Cheapest options
 - Symbol analysis
+
+Add:
+- [ ] avgPercentPerDatLasy6Months

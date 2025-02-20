@@ -1,8 +1,13 @@
 const Monitor = require('./Monitor');
 const table = require('table');
 var progressbar 	= require('progress');
+var Watchlist 	= require('./Watchlist');
 
-const watchlist = [
+const project = "./data/dr2025/"
+
+const watchlist = new Watchlist(`${project}/watchlist`)
+
+/*const watchlist = [
     "NVDA",
     "AMD",
     "ARM",
@@ -32,22 +37,25 @@ const watchlist = [
     "GRAB",
     "SOFI",
     "SOBR"
-];
+];*/
+
+const tickers = Object.keys(watchlist.list());
+
 
 const main = async () => {
-    const monitor = new Monitor("./data/");
+    const monitor = new Monitor(project);
     const bar = new progressbar('SCANNING [:bar] :percent [:current/:total] :etas', {
         complete: 	'=',
         incomplete:	' ',
         width: 		20,
-        total: 		watchlist.length
+        total: 		tickers.length
     });
 
     const output = [];
 
-    for (const ticker of watchlist) {
+    for (const ticker of tickers) {
         try {
-            let options = await monitor.getOptions(ticker, 20, 2, 160);
+            let options = await monitor.getOptions(ticker, 15, 2, 160);
             
             if (options.length === 0) {
                 console.log(`=== ${ticker} ===`);
@@ -74,7 +82,9 @@ const main = async () => {
             console.error(`Error fetching options for ${ticker}:`, error.message);
         }
     }
-
+    output.sort((a, b) => {
+        return a.pricePerContract > b.pricePerContract ? 1 : -1;
+    })
     console.log(output);
     monitor.write("scan.json", output)
 };

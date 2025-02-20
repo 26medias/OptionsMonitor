@@ -5,6 +5,10 @@ const _ = require('underscore');
 const Watchlist = require('./Watchlist');
 const Options = require('./Options');
 const StockData = require('./StockData');
+const RedditTracker = require('./RedditTracker');
+const NewsLoader = require('./NewsLoader');
+const MarketCycle = require('./MarketCycle');
+
 
 const MS_HOUR = 1000*60*60;
 const MS_DAY = MS_HOUR*24;
@@ -15,27 +19,41 @@ class Monitor {
         this.watchlist = new Watchlist(this.data_dir+"/watchlist");
         this.stock = new StockData(this.data_dir+"/stock");
         this.options = new Options();
+        this.reddit = new RedditTracker(this.data_dir+"/reddit")
+        this.news = new NewsLoader(this.data_dir+"/news");
     }
 
     init() {
 
     }
 
-    async getStockData(ticker) {
-        return await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*100)), false);
+    // Get stock data
+    async getStockData(ticker, refresh=true) {
+        return await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*100)), refresh);
     }
 
-    /*
-        - List expiration dates
-            - For each date:
-                - List positive strikes within x% of close price
-                    - for each strike:
-                        - Get the value
-    */
-    async getOptions(ticker, strikeWithinPercent=10, maxPercentPerDay=2, minDaysAway=10) {
+    // Get the augmented stock data (indicators added)
+    async getAugmentedStockData(ticker, refresh=true) {
+        let data = await this.getStockData(ticker, refresh);
+        data = data[ticker];
+        const MC = new MarketCycle(data.map(item => item.close));
+        const marketcycles = MC.mc(14, 20);
+        const rsi = MC.RSI(14);
+        data = data.map((item, n) => {
+            return {
+                ...item,
+                rsi: rsi[n],
+                marketcycle: marketcycles[n]
+            }
+        })
+        return data;
+    }
+
+    // List all available options for a ticker
+    async getOptions(ticker, strikeWithinPercent=10, maxPercentPerDay=2, minDaysAway=10, refresh=true) {
         const scope = this;
         let output = [];
-        const data = await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*10)), false);
+        const data = await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*10)), refresh);
         const last = data[ticker][data[ticker].length-1];
         //return last
         let expirations = await this.options.getExpirations(ticker);
@@ -89,7 +107,27 @@ class Monitor {
         this.write(`options/${ticker}-within-${strikeWithinPercent}.json`, output);
         return output;
     }
-                        
+    
+    // Get the reddit stats
+    async getRedditStats(ticker, refresh=true, pages=10) {
+        if (refresh) {
+            await this.reddit.refresh(pages);
+        }
+        
+        return this.reddit.get(ticker) || false;
+    }
+    
+    // Get the news
+    async getNews(ticker, days=7) {
+        await this.news.refresh({
+            days,
+            limit: 1000,
+            symbols: [ticker]
+        });
+        
+        return this.news.getByTicker(ticker);
+    }
+    
 
     // ------------
 
@@ -173,41 +211,35 @@ class Monitor {
 
     // ------------
 
-    async getMarketState() {
-
-    }
-
-    async getCheapOptions(ticker) {
-        return await this.getOptions(ticker);
-    }
-
-    async getTickerSnapshot(ticker) {
-
-    }
-
-    async getTickerAnalysis(ticker) {
-
-    }
 }
 
 module.exports = Monitor;
 /*
-
 */
-const main = async () => {
-    const monitor = new Monitor("./data/")
-    let options = await monitor.getOptions("DGLY", 20, 160);
-    options.sort((a, b) => {
-        return a.price > b.price;
-    })
-    console.log(options.slice(0, 20))
-    cheapest = options[0];
-    console.log(`Cheapest option: $${cheapest.pricePerContract}`)
-    console.log(cheapest)
+
+if (require.main === module) {
+    const main = async () => {
+        const monitor = new Monitor("./data/test");
+        const stats = await monitor.getRedditStats("PLTR", false);
+        console.log(stats)
+        //const news = await monitor.getNews("PLTR", 1);
+        //console.log(news)
+        const indicators = await monitor.getAugmentedStockData("PLTR", true);
+        console.log(indicators)
+        
+        /*let options = await monitor.getOptions("DVN", 20, 160);
+        options.sort((a, b) => {
+            return a.price > b.price;
+        })
+        console.log(options.slice(0, 20))
+        cheapest = options[0];
+        console.log(`Cheapest option: $${cheapest.pricePerContract}`)
+        console.log(cheapest)*/
 
 
-    //const data = await monitor.getStockData("INTC");
-    //console.log(data);
+        //const data = await monitor.getStockData("INTC");
+        //console.log(data);
+    }
+
+    main();
 }
-
-main();
