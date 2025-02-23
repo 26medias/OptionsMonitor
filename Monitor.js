@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const pstack = require('pstack');
 const _ = require('underscore');
+var progressbar 	= require('progress');
+var colors = require('colors');
 
 const Watchlist = require('./Watchlist');
 const Options = require('./Options');
@@ -8,10 +11,14 @@ const StockData = require('./StockData');
 const RedditTracker = require('./RedditTracker');
 const NewsLoader = require('./NewsLoader');
 const MarketCycle = require('./MarketCycle');
+var Gradient = require('./Gradient');
+var NodeChart = require('./NodeChart');
+var MarketSR = require('./MarketSR');
 
 
 const MS_HOUR = 1000*60*60;
 const MS_DAY = MS_HOUR*24;
+const MS_WEEK = MS_DAY*7;
 
 class Monitor {
     constructor(data_dir) {
@@ -28,8 +35,8 @@ class Monitor {
     }
 
     // Get stock data
-    async getStockData(ticker, refresh=true) {
-        return await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*100)), refresh);
+    async getStockData(ticker, refresh=true, timeframe="1 day") {
+        return await this.stock.get(ticker, timeframe, new Date(new Date().getTime()-(MS_DAY*100)), refresh);
     }
 
     // Get the augmented stock data (indicators added)
@@ -52,60 +59,65 @@ class Monitor {
     // List all available options for a ticker
     async getOptions(ticker, strikeWithinPercent=10, maxPercentPerDay=2, minDaysAway=10, refresh=true) {
         const scope = this;
-        let output = [];
-        const data = await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*10)), refresh);
-        const last = data[ticker][data[ticker].length-1];
-        //return last
-        let expirations = await this.options.getExpirations(ticker);
-        expirations = expirations.filter(item => {
-            return (new Date(item).getTime() - new Date().getTime())/MS_DAY >= minDaysAway
-        });
+        const filename = `options/${ticker}-within-${strikeWithinPercent}.json`;
+        if (!refresh && fs.existsSync(`${this.data_dir}/${filename}`)) {
+            return this.read(filename);
+        } else {
+            let output = [];
+            const data = await this.stock.get(ticker, "1 day", new Date(new Date().getTime()-(MS_DAY*10)), refresh);
+            const last = data[ticker][data[ticker].length-1];
+            //return last
+            let expirations = await this.options.getExpirations(ticker);
+            expirations = expirations.filter(item => {
+                return (new Date(item).getTime() - new Date().getTime())/MS_DAY >= minDaysAway
+            });
 
-        const percents = (v, s) => {
-            return parseFloat(((s - v)/v*100).toFixed(2));
-        }
-    
-        // Process expirations in parallel
-        for (const date of expirations) {
-            const formattedDate = this.packDate(date);
-            let contracts = await this.options.getAvailableContracts(ticker, formattedDate);
-            contracts = contracts
-                // Limit the strike price within range
-                .filter(item => Math.abs(percents(last.close, item.strike)) <= strikeWithinPercent)
-                // Call options only
-                .filter(item => item.optionType == "C")
-                // Setup new keys
-                .map(item => {
-                    const expiration = scope.unpackDate(item.expiration);
-                    const expiration_ms = expiration-new Date().getTime();
-                    const percentAboveStrike = percents(last.close, item.strike);
-                    return {
-                        ...item,
-                        strike: item.strike,
-                        currentClose: last.close,
-                        expireIn: scope.formatMs(expiration_ms),
-                        pricePerContract: parseFloat((item.price * 100).toFixed(2)),
-                        percentAboveStrike: percentAboveStrike,
-                        expiration: expiration,
-                        percentPerDay: parseFloat((percentAboveStrike/(expiration_ms/MS_DAY)).toFixed(2))
-                    }
-                })
-                // Filter on abverage percent per day
-                .filter(item => item.percentPerDay <= maxPercentPerDay);
-            
-            output = [
-                ...output,
-                ...contracts
-            ]
-        }
+            const percents = (v, s) => {
+                return parseFloat(((s - v)/v*100).toFixed(2));
+            }
+        
+            // Process expirations in parallel
+            for (const date of expirations) {
+                const formattedDate = this.packDate(date);
+                let contracts = await this.options.getAvailableContracts(ticker, formattedDate);
+                contracts = contracts
+                    // Limit the strike price within range
+                    .filter(item => Math.abs(percents(last.close, item.strike)) <= strikeWithinPercent)
+                    // Call options only
+                    .filter(item => item.optionType == "C")
+                    // Setup new keys
+                    .map(item => {
+                        const expiration = scope.unpackDate(item.expiration);
+                        const expiration_ms = expiration-new Date().getTime();
+                        const percentAboveStrike = percents(last.close, item.strike);
+                        return {
+                            ...item,
+                            strike: item.strike,
+                            currentClose: last.close,
+                            expireIn: scope.formatMs(expiration_ms),
+                            pricePerContract: parseFloat((item.price * 100).toFixed(2)),
+                            percentAboveStrike: percentAboveStrike,
+                            expiration: expiration,
+                            percentPerDay: parseFloat((percentAboveStrike/(expiration_ms/MS_DAY)).toFixed(2))
+                        }
+                    })
+                    // Filter on abverage percent per day
+                    .filter(item => item.percentPerDay <= maxPercentPerDay);
+                
+                output = [
+                    ...output,
+                    ...contracts
+                ]
+            }
 
-        // Sort by cost
-        output.sort((a, b) => {
-            return a.price > b.price ? 1 : -1;
-        })
-    
-        this.write(`options/${ticker}-within-${strikeWithinPercent}.json`, output);
-        return output;
+            // Sort by cost
+            output.sort((a, b) => {
+                return a.price > b.price ? 1 : -1;
+            })
+        
+            this.write(filename, output);
+            return output;
+        }
     }
     
     // Get the reddit stats
@@ -211,6 +223,491 @@ class Monitor {
 
     // ------------
 
+    // Scan the options available and return the best ones
+    scanOptions(strikeWithinPercent=10, maxPercentPerDay=2, minDaysAway=10, callback=()=>{}, refresh=true) {
+        const scope = this;
+        const tickers = Object.keys(this.watchlist.list());
+        console.log(tickers)
+        const output = [];
+        const stack = new pstack({
+            async: true,
+            //batch: 10,
+            progress: 'Scanning...'
+        });
+    
+        for (const ticker of tickers) {
+            stack.add(async function(done, ticker) {
+                try {
+                    let options = await scope.getOptions(ticker, strikeWithinPercent, maxPercentPerDay, minDaysAway, refresh);
+                    
+                    if (options.length === 0) {
+                        return done();
+                    }
+        
+                    let cheapest = options[0];
+                    output.push(cheapest);
+                    
+                } catch (error) {
+                    console.error(`Error fetching options for ${ticker}:`, error.message);
+                }
+                done();
+            }, ticker)
+        }
+
+        stack.start(function() {
+            output.sort((a, b) => {
+                return a.pricePerContract > b.pricePerContract ? 1 : -1;
+            })
+            callback(output);
+        })
+        
+    }
+
+    // build data
+    async buildStockData(tickers, refresh=true) {
+        const scope = this;
+        const stack = new pstack();
+
+        let data_day = {};
+        let data_week = {};
+        let data_month = {};
+        
+
+        if (refresh) {
+            stack.add(async function(done) {
+                await scope.reddit.refresh(15);
+                done();
+            });
+            
+            stack.add(async function(done) {
+                await scope.news.refresh({
+                    days: 30,
+                    limit: 1000,
+                    symbols: tickers
+                });
+                done();
+            });
+        }
+
+        stack.add(async function(done) {
+            // Download the stock data
+            data_day   = await scope.stock.get(tickers, "1 day", new Date(new Date().getTime()-(MS_DAY*200)), refresh);
+            console.log("Day done")
+            data_week  = await scope.stock.get(tickers, "1 week", new Date(new Date().getTime()-(MS_WEEK*100)), refresh);
+            console.log("Week done")
+            data_month = await scope.stock.get(tickers, "1 month", new Date(new Date().getTime()-(MS_WEEK*400)), refresh);
+            console.log("Month done")
+            
+            // Apply the transforms
+            data_day    = scope.applyTransforms(data_day);
+            data_week   = scope.applyTransforms(data_week);
+            data_month  = scope.applyTransforms(data_month);
+            
+            // Save the data
+            scope.write("scan/data_day.json", data_day);
+            scope.write("scan/data_week.json", data_week);
+            scope.write("scan/data_month.json", data_month);
+
+            // Generate the charts
+            scope.generateCharts(data_day, "scan/charts/day");
+            scope.generateCharts(data_week, "scan/charts/week");
+            scope.generateCharts(data_month, "scan/charts/month");
+
+            done();
+        })
+        
+        let options = {};
+
+        stack.add(async function(done) {
+            scope.scanOptions(5/*% from strike*/, 1/*%/day*/, 160/*min days away*/, function(output) {
+                //console.log(output);
+
+                scope.write("scan/options.json", output);
+
+                options = _.indexBy(output, "underlying");
+                
+                done();
+            }, refresh);
+        });
+
+        let merged = {}
+        stack.add(async function(done) {
+
+            tickers.forEach(ticker => {
+                merged[ticker] = {
+                    ticker,
+                    day: data_day[ticker][data_day[ticker].length-1],
+                    week: data_week[ticker][data_week[ticker].length-1],
+                    month: data_month[ticker][data_month[ticker].length-1],
+                    day_prev: data_day[ticker][data_day[ticker].length-2],
+                    week_prev: data_week[ticker][data_week[ticker].length-2],
+                    month_prev: data_month[ticker][data_month[ticker].length-2],
+                    option: options[ticker]
+                }
+                try {
+                    merged[ticker] = {
+                        ...merged[ticker],
+                        day_diff: {
+                            marketcycle: merged[ticker].day ? merged[ticker].day.marketcycle-merged[ticker].day_prev.marketcycle : null,
+                            rsi: merged[ticker].day ? merged[ticker].day.rsi-merged[ticker].day_prev.rsi : null,
+                        },
+                        week_diff: {
+                            marketcycle: merged[ticker].week ? merged[ticker].week.marketcycle-merged[ticker].week_prev.marketcycle : null,
+                            rsi: merged[ticker].week ? merged[ticker].week.rsi-merged[ticker].week_prev.rsi : null
+                        },
+                        month_diff: {
+                            marketcycle: merged[ticker].month ? merged[ticker].month.marketcycle-merged[ticker].month_prev.marketcycle : null,
+                            rsi: merged[ticker].month ? merged[ticker].month.rsi-merged[ticker].month_prev.rsi : null
+                        },
+                        reddit: scope.reddit.get(ticker),
+                        news: scope.news.getByTicker(ticker)
+                    }
+                } catch(e) {
+                    console.log(e)
+                    console.log(merged[ticker])
+                }
+                
+            })
+            scope.write("scan/scan.json", merged);
+            done();
+        });
+
+        return new Promise((resolve) => {
+            stack.start(() => {
+                resolve(merged);
+            });
+        });
+    }
+
+    applyTransforms(stockData) {
+        const tickers = Object.keys(stockData);
+        tickers.forEach(ticker => {
+            let data = stockData[ticker];
+            const MC = new MarketCycle(data.map(item => item.close));
+            const marketcycles = MC.mc(14, 20);
+            const rsi = MC.RSI(14);
+            data = data.map((item, n) => {
+                return {
+                    ...item,
+                    rsi: rsi[n],
+                    marketcycle: marketcycles[n]
+                }
+            })
+            stockData[ticker] = data;
+        })
+        return stockData;
+    }
+    getMinMax(data) {
+        let min = Infinity;
+        let max = -Infinity;
+    
+        for (const { open, high, low, close } of data) {
+            min = Math.min(min, open, high, low, close);
+            max = Math.max(max, open, high, low, close);
+        }
+    
+        return { min, max };
+    };
+    generateChart(filename, data, width=800, height=600) {
+        //console.log(data)
+        const chart = new NodeChart({
+            width: width,
+            height: height,
+            backgroundColor: {r: 21, g:23, b:34, a: 255},
+            data: data,
+            padding: 30,      // 10px padding around the edge of the canvas
+            panelGap: 10,     // 10px gap between panels
+            renderAxis: {
+                x: false,    // Do not render the x axis
+                y: true      // Render the y axis
+            }
+        });
+    
+        //console.log(data.length, filename)
+    
+    
+        const sr = new MarketSR(data);
+    
+        const supports = sr.supports()
+        const resistances = sr.resistances()
+        const minMax = this.getMinMax(data);
+    
+        //console.log({resistances, supports})
+    
+    
+        const lines = [];
+    
+        lines.push({
+            id: `max`,
+            type: "horizontal-line",
+            data: {
+                value: minMax.max
+            },
+            color: { r: 255, g: 255, b: 255, a: 255 }
+        })
+        lines.push({
+            id: `min`,
+            type: "horizontal-line",
+            data: {
+                value: minMax.min
+            },
+            color: { r: 255, g: 255, b: 255, a: 255 }
+        })
+    
+        supports.forEach(item => {
+            //item.weight==1 ? 100 : 100
+            if (item.weight > 1) {
+                lines.push({
+                    id: `support-${item.level.toFixed(2)}`,
+                    type: "horizontal-line",
+                    data: {
+                        value: parseFloat(item.level.toFixed(2))
+                    },
+                    color: { r: 74, g: 164, b: 154, a: 50 },
+                    thickness: item.weight==1 ? 1 : 2
+                })
+            }
+            
+        })
+        resistances.forEach(item => {
+            if (item.weight > 1) {
+                lines.push({
+                    id: `resistance-${item.level.toFixed(2)}`,
+                    type: "horizontal-line",
+                    data: {
+                        value: parseFloat(item.level.toFixed(2))
+                    },
+                    color: { r: 226, g: 96, b: 83, a: 50 },
+                    thickness: item.weight==1 ? 1 : 2
+                })
+            }
+        })
+    
+        chart.addPanel({
+            id: "stock-data",
+            height: 70,
+            plots: [
+                {
+                    id: "candles",
+                    type: "candlesticks",
+                    width: 5, // candle width in px
+                    gap: 2,   // gap between candles (optional)
+                    data: {
+                        open: "open",
+                        high: "high",
+                        low: "low",
+                        close: "close"
+                    },
+                    color: {
+                        up: { r: 74, g: 164, b: 154, a: 255 },
+                        down: { r: 226, g: 96, b: 83, a: 255 }
+                    }
+                },
+                ...lines
+            ]
+        });
+        
+        chart.addPanel({
+            id: "marketcycle",
+            height: 30,
+            min: 0,
+            max: 100,
+            plots: [
+                {
+                    id: "100",
+                    type: "horizontal-line",
+                    data: {
+                        value: 100
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 100 }
+                },
+                {
+                    id: "overbought",
+                    type: "horizontal-line",
+                    data: {
+                        value: 80
+                    },
+                    color: { r: 226, g: 96, b: 83, a: 255 }
+                },
+                {
+                    id: "50",
+                    type: "horizontal-line",
+                    data: {
+                        value: 50
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 50 }
+                },
+                {
+                    id: "oversold",
+                    type: "horizontal-line",
+                    data: {
+                        value: 20
+                    },
+                    color: { r: 74, g: 164, b: 154, a: 255 }
+                },
+                {
+                    id: "0",
+                    type: "horizontal-line",
+                    data: {
+                        value: 0
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 100 }
+                },
+                {
+                    id: "marketcycle",
+                    type: "spline",
+                    data: {
+                        value: "marketcycle"
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 255 }
+                },
+            ]
+        });
+        
+        chart.addPanel({
+            id: "RSI",
+            height: 30,
+            min: 0,
+            max: 100,
+            plots: [
+                {
+                    id: "100",
+                    type: "horizontal-line",
+                    data: {
+                        value: 100
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 100 }
+                },
+                {
+                    id: "overbought",
+                    type: "horizontal-line",
+                    data: {
+                        value: 80
+                    },
+                    color: { r: 226, g: 96, b: 83, a: 255 }
+                },
+                {
+                    id: "50",
+                    type: "horizontal-line",
+                    data: {
+                        value: 50
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 50 }
+                },
+                {
+                    id: "oversold",
+                    type: "horizontal-line",
+                    data: {
+                        value: 20
+                    },
+                    color: { r: 74, g: 164, b: 154, a: 255 }
+                },
+                {
+                    id: "0",
+                    type: "horizontal-line",
+                    data: {
+                        value: 0
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 100 }
+                },
+                {
+                    id: "marketcycle",
+                    type: "spline",
+                    data: {
+                        value: "rsi"
+                    },
+                    color: { r: 255, g: 255, b: 255, a: 255 }
+                },
+            ]
+        });
+    
+        const stockBox = chart.getBoundingBox('stock-data')
+        const rsiBox = chart.getBoundingBox('RSI')
+        const mcBox = chart.getBoundingBox('marketcycle')
+    
+        // Box backgrounds
+        chart.canvas.rect(rsiBox.x, rsiBox.y, rsiBox.width, rsiBox.height, {r: 35, g:39, b:49, a: 100}, true);
+        chart.canvas.rect(mcBox.x, mcBox.y, mcBox.width, mcBox.height, {r: 35, g:39, b:49, a: 100}, true);
+    
+        chart.render()
+    
+        const marginX = 5;
+        const marginY = -3;
+    
+        // Render the panels labels
+        const mcMax = chart.getCoordinates(data.length-1, "marketcycle", "100");
+        chart.canvas.write(mcMax.x+marginX, mcMax.y+marginY, "100", { r: 255, g: 255, b: 255, a: 100 })
+    
+        const mcMid = chart.getCoordinates(data.length-1, "marketcycle", "50");
+        chart.canvas.write(mcMid.x+marginX, mcMid.y+marginY, "50", { r: 255, g: 255, b: 255, a: 100 })
+    
+        const mcMin = chart.getCoordinates(data.length-1, "marketcycle", "0");
+        chart.canvas.write(mcMin.x+marginX, mcMin.y+marginY, "0", { r: 255, g: 255, b: 255, a: 100 })
+    
+        const mcUp = chart.getCoordinates(data.length-1, "marketcycle", "overbought");
+        chart.canvas.write(mcUp.x+marginX, mcUp.y+marginY, "70", { r: 226, g: 96, b: 83, a: 255 })
+    
+        const mcDn = chart.getCoordinates(data.length-1, "marketcycle", "oversold");
+        chart.canvas.write(mcDn.x+marginX, mcDn.y+marginY, "30", { r: 74, g: 164, b: 154, a: 255 })
+    
+        chart.canvas.write(mcBox.x+5, mcBox.y+10, "MARKETCYCLE: "+data[data.length-1].marketcycle.toFixed(2), { r: 255, g: 255, b: 255, a: 255 }, {font: 'large'})
+    
+    
+    
+        const rsiMax = chart.getCoordinates(data.length-1, "RSI", "100");
+        chart.canvas.write(rsiMax.x+marginX, rsiMax.y+marginY, "100", { r: 255, g: 255, b: 255, a: 100 })
+    
+        const rsiMid = chart.getCoordinates(data.length-1, "RSI", "50");
+        chart.canvas.write(rsiMid.x+marginX, rsiMid.y+marginY, "50", { r: 255, g: 255, b: 255, a: 100 })
+    
+        const rsiMin = chart.getCoordinates(data.length-1, "RSI", "0");
+        chart.canvas.write(rsiMin.x+marginX, rsiMin.y+marginY, "0", { r: 255, g: 255, b: 255, a: 100 })
+    
+        const rsiUp = chart.getCoordinates(data.length-1, "RSI", "overbought");
+        chart.canvas.write(rsiUp.x+marginX, rsiUp.y+marginY, "70", { r: 226, g: 96, b: 83, a: 255 })
+    
+        const rsiDn = chart.getCoordinates(data.length-1, "RSI", "oversold");
+        chart.canvas.write(rsiDn.x+marginX, rsiDn.y+marginY, "30", { r: 74, g: 164, b: 154, a: 255 })
+    
+        chart.canvas.write(rsiBox.x+5, rsiBox.y+10, "RSI: "+data[data.length-1].rsi.toFixed(2), { r: 255, g: 255, b: 255, a: 255 }, {font: 'large'})
+    
+        // SR labels
+        supports.forEach(item => {
+            if (item.weight > 1) {
+                const color = { r: 74, g: 164, b: 154, a: item.weight==1 ? 100 : 200 };
+                const name = `support-${item.level.toFixed(2)}`
+                const lineCoords = chart.getCoordinates(data.length-1, "stock-data", name);
+                chart.canvas.write(lineCoords.x+marginX, lineCoords.y+marginY, item.level.toFixed(2), color)
+            }
+        });
+        resistances.forEach(item => {
+            if (item.weight > 1) {
+                const color = { r: 226, g: 96, b: 83, a: item.weight==1 ? 100 : 200 };
+                const name = `resistance-${item.level.toFixed(2)}`
+                const lineCoords = chart.getCoordinates(data.length-1, "stock-data", name);
+                chart.canvas.write(lineCoords.x+marginX, lineCoords.y+marginY, item.level.toFixed(2), color)
+            }
+        });
+    
+        // Min/max
+        const maxCoords = chart.getCoordinates(data.length-1, "stock-data", "max");
+        chart.canvas.write(maxCoords.x+marginX, maxCoords.y+marginY, minMax.max.toFixed(2), { r: 255, g: 255, b: 255, a: 255 })
+        const minCoords = chart.getCoordinates(data.length-1, "stock-data", "min");
+        chart.canvas.write(minCoords.x+marginX, minCoords.y+marginY, minMax.min.toFixed(2), { r: 255, g: 255, b: 255, a: 255 })
+    
+        // Price
+        chart.canvas.write(stockBox.x+marginX, stockBox.y-20, "Current price: "+data[data.length-1].close.toFixed(2), { r: 255, g: 255, b: 255, a: 255 }, {font: 'large'})
+        
+        chart.save(filename);
+        return filename;
+    }
+    
+    generateCharts(data, filepath) {
+        const scope = this;
+        Object.keys(data).forEach(ticker => {
+            scope.generateChart(`${scope.data_dir}/${filepath}/${ticker}.png`, data[ticker]);
+        });
+    }
 }
 
 module.exports = Monitor;

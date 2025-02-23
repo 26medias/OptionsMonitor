@@ -9,8 +9,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "args": "^5.0.3",
     "axios": "^1.7.9",
+    "colors": "^1.4.0",
     "humanize-duration": "^3.32.1",
+    "pngjs": "^7.0.0",
     "progress": "^2.0.3",
     "pstack": "^0.1.5",
     "table": "^6.9.0",

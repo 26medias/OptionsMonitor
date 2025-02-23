@@ -1,0 +1,482 @@
+[
+    {
+        "ticker": "NVDA",
+        "name": "Nvidia Corp.",
+        "Sector": "AI & Robotics",
+        "weight": 5.0,
+        "rationale": "Dominant AI GPU supplier with 80–95% market share, driving the AI boom with explosive data center growth and robust backlog.",
+        "company_description": "Nvidia Corporation is a leading technology company specializing in graphics processing units (GPUs) and AI computing solutions."
+    },
+    {
+        "ticker": "MSFT",
+        "name": "Microsoft Corp.",
+        "Sector": "AI & Robotics",
+        "weight": 4.0,
+        "rationale": "Cloud and AI leader integrating GPT into Azure and Office; generating over $13B in annual AI revenue and investing heavily in AI infrastructure.",
+        "company_description": "Microsoft Corporation is a global technology leader known for its software, cloud computing, and enterprise services."
+    },
+    {
+        "ticker": "LMT",
+        "name": "Lockheed Martin Corp.",
+        "Sector": "Defense & Security",
+        "weight": 4.0,
+        "rationale": "Top U.S. defense contractor with major programs like the F-35; set to benefit from higher defense budgets and record order backlogs.",
+        "company_description": "Lockheed Martin is an American aerospace and defense company that designs and manufactures advanced military systems."
+    },
+    {
+        "ticker": "LLY",
+        "name": "Eli Lilly & Co.",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 4.0,
+        "rationale": "Pharma innovator with a breakthrough obesity drug (Zepbound/Mounjaro) and a strong pipeline, supporting significant sales growth.",
+        "company_description": "Eli Lilly and Company is a global pharmaceutical firm focused on innovative therapies for chronic and acute conditions."
+    },
+    {
+        "ticker": "CAT",
+        "name": "Caterpillar Inc.",
+        "Sector": "Infrastructure & Energy",
+        "weight": 3.0,
+        "rationale": "World’s leading construction machinery maker benefiting from over $1 trillion in U.S. infrastructure spending and reshoring trends.",
+        "company_description": "Caterpillar Inc. manufactures heavy equipment and engines, serving construction, mining, and infrastructure sectors worldwide."
+    },
+    {
+        "ticker": "ETN",
+        "name": "Eaton Corp.",
+        "Sector": "Manufacturing & Reshoring",
+        "weight": 3.0,
+        "rationale": "Electrical equipment leader with strong exposure to U.S. factory build-outs; recognized as a top reshoring pick with robust order growth.",
+        "company_description": "Eaton Corporation provides energy-efficient solutions for electrical systems and power management across industries."
+    },
+    {
+        "ticker": "NOC",
+        "name": "Northrop Grumman Corp.",
+        "Sector": "Defense & Security",
+        "weight": 3.0,
+        "rationale": "Key contractor in strategic programs including the B-21 stealth bomber and nuclear systems, with strong backlog visibility.",
+        "company_description": "Northrop Grumman is an American aerospace and defense technology company specializing in advanced systems and solutions."
+    },
+    {
+        "ticker": "NVO",
+        "name": "Novo Nordisk A/S",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 3.0,
+        "rationale": "Maker of Wegovy and Ozempic with overwhelming demand in obesity and diabetes care, poised for market expansion.",
+        "company_description": "Novo Nordisk is a global healthcare company that leads in diabetes care and obesity treatment through innovative products."
+    },
+    {
+        "ticker": "AMZN",
+        "name": "Amazon.com Inc.",
+        "Sector": "AI & Robotics",
+        "weight": 3.0,
+        "rationale": "Cloud titan (AWS) offering AI-as-a-Service and robotics in fulfillment centers, driving efficiency and long-term cloud growth.",
+        "company_description": "Amazon.com, Inc. is a multinational technology company focused on e-commerce, cloud computing, and digital innovation."
+    },
+    {
+        "ticker": "TSLA",
+        "name": "Tesla Inc.",
+        "Sector": "AI & Robotics",
+        "weight": 3.0,
+        "rationale": "EV and autonomy leader applying AI to self-driving and robotics (Optimus robot) with scaling manufacturing capabilities.",
+        "company_description": "Tesla, Inc. designs and manufactures electric vehicles and renewable energy products while pioneering autonomous driving technology."
+    },
+    {
+        "ticker": "AVGO",
+        "name": "Broadcom Inc.",
+        "Sector": "AI & Robotics",
+        "weight": 2.0,
+        "rationale": "Provides critical semiconductors and networking chips for AI applications; benefits from massive cloud capex and strategic acquisitions.",
+        "company_description": "Broadcom Inc. is a global technology company that develops semiconductors and infrastructure software solutions."
+    },
+    {
+        "ticker": "PLTR",
+        "name": "Palantir Technologies",
+        "Sector": "AI & Robotics (AI/Defense)",
+        "weight": 2.0,
+        "rationale": "Offers a leading data analytics and AI platform for government and enterprises; profitable and positioned for expanding contracts.",
+        "company_description": "Palantir Technologies is a software company specializing in big data analytics and providing solutions for complex data challenges."
+    },
+    {
+        "ticker": "ROK",
+        "name": "Rockwell Automation Inc.",
+        "Sector": "Manufacturing & Reshoring",
+        "weight": 2.0,
+        "rationale": "Industrial automation leader with rising orders as companies invest in modernizing production lines and benefiting from reshoring trends.",
+        "company_description": "Rockwell Automation provides industrial automation and information solutions to improve manufacturing productivity."
+    },
+    {
+        "ticker": "URI",
+        "name": "United Rentals Inc.",
+        "Sector": "Manufacturing & Reshoring (Industrials)",
+        "weight": 2.0,
+        "rationale": "Largest construction equipment rental firm poised to benefit from increased infrastructure and factory construction activity.",
+        "company_description": "United Rentals is the world's largest equipment rental company, serving industrial and construction sectors with a broad range of machinery."
+    },
+    {
+        "ticker": "NUE",
+        "name": "Nucor Corp.",
+        "Sector": "Manufacturing & Reshoring (Materials)",
+        "weight": 2.0,
+        "rationale": "America’s largest steel producer benefiting from reshoring trends and strong domestic construction demand.",
+        "company_description": "Nucor Corporation is a leading American steel producer manufacturing a wide array of steel products for various industries."
+    },
+    {
+        "ticker": "FSLR",
+        "name": "First Solar Inc.",
+        "Sector": "Manufacturing & Reshoring (Clean Energy)",
+        "weight": 2.0,
+        "rationale": "Top U.S. solar panel maker capitalizing on IRA incentives and expanding domestic production capacity.",
+        "company_description": "First Solar is an American manufacturer of photovoltaic solar panels and provider of utility-scale solar power solutions."
+    },
+    {
+        "ticker": "XOM",
+        "name": "Exxon Mobil Corp.",
+        "Sector": "Infrastructure & Energy (Oil & Gas)",
+        "weight": 2.0,
+        "rationale": "Integrated oil major benefiting from favorable energy policies and sustained high oil prices in a shifting policy environment.",
+        "company_description": "Exxon Mobil is one of the world's largest publicly traded international oil and gas companies, engaged in exploration, production, and refining."
+    },
+    {
+        "ticker": "SLB",
+        "name": "SLB (Schlumberger Ltd.)",
+        "Sector": "Infrastructure & Energy (Oilfield Svcs)",
+        "weight": 2.0,
+        "rationale": "World’s leading oilfield services provider positioned to benefit from rising drilling activity and increased capital expenditure in oil & gas.",
+        "company_description": "Schlumberger Limited is the largest oilfield services company globally, offering technology and services to the energy industry."
+    },
+    {
+        "ticker": "DVN",
+        "name": "Devon Energy Corp.",
+        "Sector": "Infrastructure & Energy (Oil & Gas E&P)",
+        "weight": 2.0,
+        "rationale": "Shale oil & gas producer highly leveraged to U.S. oil prices with operational efficiency and shareholder-friendly practices.",
+        "company_description": "Devon Energy is an independent energy company focused on the exploration, development, and production of oil and natural gas."
+    },
+    {
+        "ticker": "EQIX",
+        "name": "Equinix Inc.",
+        "Sector": "Infrastructure & Energy (Data Centers)",
+        "weight": 2.0,
+        "rationale": "Largest global data center REIT benefiting from strong demand driven by AI and cloud growth, with high occupancy and pricing power.",
+        "company_description": "Equinix is a global data center and colocation provider offering interconnection and hosting services for digital businesses."
+    },
+    {
+        "ticker": "RTX",
+        "name": "RTX Corp. (Raytheon Tech.)",
+        "Sector": "Defense & Security",
+        "weight": 2.0,
+        "rationale": "Diversified defense and aerospace firm with strong demand for its precision weapons and missile systems amid rising military spending.",
+        "company_description": "RTX Corporation (formerly Raytheon Technologies) is a major American defense contractor providing aerospace and defense products and services."
+    },
+    {
+        "ticker": "CRWD",
+        "name": "CrowdStrike Holdings",
+        "Sector": "Defense & Security (Cybersecurity)",
+        "weight": 2.0,
+        "rationale": "Leader in endpoint cybersecurity with approximately 40% annual recurring revenue growth, benefiting from rising global cyber spend.",
+        "company_description": "CrowdStrike Holdings is a cybersecurity technology company specializing in cloud-based endpoint protection, threat intelligence, and cyberattack response."
+    },
+    {
+        "ticker": "ISRG",
+        "name": "Intuitive Surgical Inc.",
+        "Sector": "Healthcare & Pharma Innovation (MedTech)",
+        "weight": 2.0,
+        "rationale": "Dominant surgical robotics company with over 80% market share and a recurring revenue model driven by expanding global adoption.",
+        "company_description": "Intuitive Surgical is a medical device company renowned for its da Vinci robotic surgical systems and innovations in minimally invasive surgery."
+    },
+    {
+        "ticker": "VRTX",
+        "name": "Vertex Pharmaceuticals",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 2.0,
+        "rationale": "Biotech leader in cystic fibrosis treatment with a robust innovation pipeline, including potential CRISPR-based therapies.",
+        "company_description": "Vertex Pharmaceuticals is a biotechnology company focused on developing and commercializing therapies for cystic fibrosis and other serious diseases."
+    },
+    {
+        "ticker": "AMD",
+        "name": "Advanced Micro Devices",
+        "Sector": "AI & Robotics (Semiconductors)",
+        "weight": 2.0,
+        "rationale": "Key challenger in the AI chip market; launching MI300 accelerators and expecting significant sales growth in AI-related products.",
+        "company_description": "Advanced Micro Devices (AMD) is a multinational semiconductor company that designs and manufactures microprocessors, GPUs, and related technologies."
+    },
+    {
+        "ticker": "INTC",
+        "name": "Intel Corp.",
+        "Sector": "AI & Robotics (Semiconductors)",
+        "weight": 1.0,
+        "rationale": "Turnaround play benefiting from U.S. subsidies for new fabs and next-generation GPU/AI chips, offering value with high dividend yield.",
+        "company_description": "Intel Corporation is one of the world's largest semiconductor manufacturers, known for its microprocessors and chipsets."
+    },
+    {
+        "ticker": "SNOW",
+        "name": "Snowflake Inc.",
+        "Sector": "AI & Robotics (Software)",
+        "weight": 1.0,
+        "rationale": "Cloud data platform with ~40% YoY growth, enabling enterprises to store and analyze data for AI and analytics applications.",
+        "company_description": "Snowflake Inc. is a cloud-based data warehousing company that provides scalable data storage, processing, and analytic solutions."
+    },
+    {
+        "ticker": "DDOG",
+        "name": "Datadog Inc.",
+        "Sector": "AI & Robotics (Software)",
+        "weight": 1.0,
+        "rationale": "Cloud monitoring and security platform that supports AI/ML application performance tracking and enhances infrastructure observability.",
+        "company_description": "Datadog Inc. is a monitoring and analytics platform for cloud applications, offering real-time observability of infrastructure and performance data."
+    },
+    {
+        "ticker": "GOOGL",
+        "name": "Alphabet (Google)",
+        "Sector": "AI & Robotics (Big Tech)",
+        "weight": 1.0,
+        "rationale": "Pioneer in AI innovations with DeepMind and broad integration of AI across products, also leading in autonomous driving and quantum computing.",
+        "company_description": "Alphabet Inc. is the parent company of Google, providing search, advertising, cloud, and cutting-edge technology solutions globally."
+    },
+    {
+        "ticker": "ON",
+        "name": "ON Semiconductor",
+        "Sector": "Manufacturing & Reshoring (Semis)",
+        "weight": 1.0,
+        "rationale": "Specialist in power and automotive chips, expanding domestic production and benefiting from U.S. CHIPS Act incentives.",
+        "company_description": "ON Semiconductor is a supplier of semiconductor solutions focusing on energy-efficient technologies for automotive, industrial, and consumer markets."
+    },
+    {
+        "ticker": "NVMI",
+        "name": "Nova Ltd.",
+        "Sector": "Manufacturing & Reshoring (Semi Equip)",
+        "weight": 1.0,
+        "rationale": "Metrology equipment supplier for chip fabs, expected to see strong orders from new U.S. facilities and deliver high-margin products.",
+        "company_description": "Nova Ltd. provides advanced metrology and inspection equipment critical to semiconductor manufacturing processes."
+    },
+    {
+        "ticker": "CAMT",
+        "name": "Camtek Ltd.",
+        "Sector": "Manufacturing & Reshoring (Semi Equip)",
+        "weight": 1.0,
+        "rationale": "Semiconductor inspection equipment maker positioned to benefit from CHIPS Act subsidies and growing demand for advanced packaging solutions.",
+        "company_description": "Camtek Ltd. specializes in automated inspection and metrology solutions for semiconductor manufacturing and advanced packaging."
+    },
+    {
+        "ticker": "JBL",
+        "name": "Jabil Inc.",
+        "Sector": "Manufacturing & Reshoring (Electronics Mfg)",
+        "weight": 1.0,
+        "rationale": "Leading contract manufacturer expanding its U.S. footprint, well positioned to benefit from reshoring trends in electronics production.",
+        "company_description": "Jabil Inc. is an electronics manufacturing services company providing design, production, and supply chain solutions to global brands."
+    },
+    {
+        "ticker": "FLEX",
+        "name": "Flex Ltd.",
+        "Sector": "Manufacturing & Reshoring (Electronics Mfg)",
+        "weight": 1.0,
+        "rationale": "Major EMS provider with facilities in the U.S. and Mexico; benefits from a diverse customer base as companies shift manufacturing closer to home.",
+        "company_description": "Flex Ltd. is a multinational electronics manufacturing services provider offering comprehensive end-to-end supply chain solutions."
+    },
+    {
+        "ticker": "EGP",
+        "name": "EastGroup Properties",
+        "Sector": "Manufacturing & Reshoring (REIT)",
+        "weight": 1.0,
+        "rationale": "Industrial REIT focused on warehouse properties in key manufacturing hubs, benefiting from increased demand driven by reshoring.",
+        "company_description": "EastGroup Properties is a real estate investment trust that owns and operates industrial properties, particularly in high-demand manufacturing regions."
+    },
+    {
+        "ticker": "ABB",
+        "name": "ABB Ltd.",
+        "Sector": "Manufacturing & Reshoring (Industrial)",
+        "weight": 1.0,
+        "rationale": "Global automation and electrification company with strong U.S. exposure, set to benefit from both private capex and public infrastructure spending.",
+        "company_description": "ABB Ltd. is a multinational corporation specializing in robotics, power, heavy electrical equipment, and automation technology."
+    },
+    {
+        "ticker": "CMC",
+        "name": "Commercial Metals Co.",
+        "Sector": "Manufacturing & Reshoring (Materials)",
+        "weight": 1.0,
+        "rationale": "Steel rebar producer benefiting from construction and infrastructure projects tied to reshoring and domestic manufacturing growth.",
+        "company_description": "Commercial Metals Company produces steel and metal products, specializing in rebar and other construction materials for industrial applications."
+    },
+    {
+        "ticker": "ENB",
+        "name": "Enbridge Inc.",
+        "Sector": "Infrastructure & Energy (Midstream)",
+        "weight": 1.0,
+        "rationale": "North America’s largest pipeline operator, benefiting from resilient energy demand, supportive policies, and strong dividend yield.",
+        "company_description": "Enbridge Inc. is an energy infrastructure company focusing on the transportation of oil and gas through an extensive pipeline network."
+    },
+    {
+        "ticker": "NEE",
+        "name": "NextEra Energy Inc.",
+        "Sector": "Infrastructure & Energy (Renewables)",
+        "weight": 1.0,
+        "rationale": "Leading renewable energy utility with strong growth prospects driven by IRA incentives and expanding utility rate bases.",
+        "company_description": "NextEra Energy is a clean energy company and the world's largest generator of renewable energy from wind and solar power."
+    },
+    {
+        "ticker": "J",
+        "name": "Jacobs Solutions Inc.",
+        "Sector": "Infrastructure & Energy (Engineering)",
+        "weight": 1.0,
+        "rationale": "Prominent engineering and construction management firm with record backlogs, benefiting from a surge in public infrastructure projects.",
+        "company_description": "Jacobs Solutions Inc. provides technical, professional, and construction services to support large-scale infrastructure and government projects."
+    },
+    {
+        "ticker": "PWR",
+        "name": "Quanta Services Inc.",
+        "Sector": "Infrastructure & Energy (Construction)",
+        "weight": 1.0,
+        "rationale": "Specialist in electrical grid and pipeline construction, poised to benefit from utilities upgrading and connecting renewable projects.",
+        "company_description": "Quanta Services is a leading infrastructure services company providing specialized construction and engineering services for the energy sector."
+    },
+    {
+        "ticker": "LHX",
+        "name": "L3Harris Technologies",
+        "Sector": "Defense & Security",
+        "weight": 1.0,
+        "rationale": "Defense electronics and communications leader, well positioned to secure new DoD contracts as military modernization efforts continue.",
+        "company_description": "L3Harris Technologies is an American defense contractor and technology company offering advanced communications, surveillance, and electronic systems."
+    },
+    {
+        "ticker": "PANW",
+        "name": "Palo Alto Networks",
+        "Sector": "Defense & Security (Cybersecurity)",
+        "weight": 1.0,
+        "rationale": "Global cybersecurity leader transitioning to an AI-powered platform model with strong growth in firewalls and cloud security solutions.",
+        "company_description": "Palo Alto Networks is a cybersecurity company that delivers advanced network security and cloud-based threat detection services."
+    },
+    {
+        "ticker": "BAESY",
+        "name": "BAE Systems plc",
+        "Sector": "Defense & Security",
+        "weight": 1.0,
+        "rationale": "Europe’s largest defense contractor benefiting from rising NATO defense spending and allied modernization programs.",
+        "company_description": "BAE Systems is a British multinational defense, security, and aerospace company providing advanced military technology and services."
+    },
+    {
+        "ticker": "GD",
+        "name": "General Dynamics Corp.",
+        "Sector": "Defense & Security",
+        "weight": 1.0,
+        "rationale": "Diversified defense company with strong backlogs in Marine, Combat, and Aerospace segments, offering stable cash generation.",
+        "company_description": "General Dynamics is an American aerospace and defense corporation that provides a broad range of military products and services."
+    },
+    {
+        "ticker": "REGN",
+        "name": "Regeneron Pharmaceuticals",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 1.0,
+        "rationale": "Biotech company with a strong track record and a rich pipeline in immunology and oncology, poised for new drug approvals.",
+        "company_description": "Regeneron Pharmaceuticals is a biotechnology firm focused on developing innovative therapies for a range of serious diseases."
+    },
+    {
+        "ticker": "MRNA",
+        "name": "Moderna Inc.",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 1.0,
+        "rationale": "mRNA technology pioneer with an extensive pipeline including RSV, flu, and cancer vaccines, backed by substantial cash reserves.",
+        "company_description": "Moderna Inc. is a biotechnology company known for its groundbreaking mRNA vaccine technology and its expanding portfolio of therapeutic candidates."
+    },
+    {
+        "ticker": "CRSP",
+        "name": "CRISPR Therapeutics",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 1.0,
+        "rationale": "Genome editing biotech on the verge of FDA approval for a CRISPR-based therapy, offering high risk/reward potential.",
+        "company_description": "CRISPR Therapeutics is a gene-editing company focused on developing transformative therapies using CRISPR/Cas9 technology."
+    },
+    {
+        "ticker": "ABBV",
+        "name": "AbbVie Inc.",
+        "Sector": "Healthcare & Pharma Innovation",
+        "weight": 1.0,
+        "rationale": "Large pharmaceutical company with a strong immunology portfolio and high dividend yield, recovering from its Humira patent cliff.",
+        "company_description": "AbbVie Inc. is a global biopharmaceutical company known for its innovative therapies in immunology, oncology, and other therapeutic areas."
+    },
+    {
+        "ticker": "MP",
+        "name": "MP Materials Corp.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Restoring the U.S. rare earth supply chain with a mine-to-magnet capability and backed by key DoD contracts, poised for growth.",
+        "company_description": "MP Materials is focused on mining and processing rare earth elements critical for defense and advanced technology applications."
+    },
+    {
+        "ticker": "ALB",
+        "name": "Albemarle Corp.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "One of the largest lithium producers globally, benefiting from increased EV sales and battery production localization with expanding capacity.",
+        "company_description": "Albemarle Corporation is a specialty chemicals company and a leading producer of lithium and other critical materials for energy storage."
+    },
+    {
+        "ticker": "ASML",
+        "name": "ASML Holding N.V.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Sole producer of EUV lithography equipment essential for advanced chipmaking; enjoys a near-monopoly with strong pricing power.",
+        "company_description": "ASML Holding is a Dutch company that manufactures cutting-edge photolithography systems used in semiconductor production."
+    },
+    {
+        "ticker": "AMAT",
+        "name": "Applied Materials Inc.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Leading semiconductor fabrication equipment vendor benefiting from a global fab construction boom and expansion into advanced packaging.",
+        "company_description": "Applied Materials Inc. supplies equipment, services, and software essential for semiconductor and display manufacturing."
+    },
+    {
+        "ticker": "ANET",
+        "name": "Arista Networks Inc.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Dominant provider of high-speed data center networking switches, benefiting from AI-driven cloud infrastructure investments.",
+        "company_description": "Arista Networks is a technology company specializing in high-speed network switches and software for data centers and enterprise environments."
+    },
+    {
+        "ticker": "TXN",
+        "name": "Texas Instruments Inc.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Analog and embedded chip leader building new fabs in Texas; vital for industrial, automotive, and defense applications with strong cash flow.",
+        "company_description": "Texas Instruments designs and manufactures semiconductors, with a focus on analog and embedded processing solutions."
+    },
+    {
+        "ticker": "CP",
+        "name": "CPKC (Can. Pac. Kansas City)",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "The first USMCA railroad, uniquely positioned to capitalize on near-shoring trade and volume growth following a major merger.",
+        "company_description": "CPKC is a North American railroad company formed by the merger of Canadian Pacific and Kansas City Southern, operating across Canada, the U.S., and Mexico."
+    },
+    {
+        "ticker": "ZBRA",
+        "name": "Zebra Technologies",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Maker of barcode, RFID, and automation solutions for warehouses, benefiting from reshoring and increased demand for supply chain visibility.",
+        "company_description": "Zebra Technologies provides solutions for data capture and automatic identification, enhancing supply chain and warehouse management."
+    },
+    {
+        "ticker": "FDX",
+        "name": "FedEx Corp.",
+        "Sector": "Critical Supply Chains & Resources",
+        "weight": 1.0,
+        "rationale": "Global shipping and logistics provider poised for margin expansion and benefiting from resilient consumer demand and regional distribution growth.",
+        "company_description": "FedEx Corp. is a multinational courier delivery services company offering transportation, logistics, and supply chain management solutions."
+    },
+    {
+        "ticker": "META",
+        "name": "Meta Platforms Inc.",
+        "Sector": "AI & Robotics (AI Infrastructure)",
+        "weight": 1.0,
+        "rationale": "Social media giant pivoting to AI and VR, investing heavily in AI infrastructure with robust growth in AI-driven ad tools and new feature adoption.",
+        "company_description": "Meta Platforms Inc. is a technology conglomerate known for its social media platforms and significant investments in virtual reality and artificial intelligence."
+    },
+    {
+        "ticker": "DE",
+        "name": "Deere & Co.",
+        "Sector": "Manufacturing & Reshoring (Industrials)",
+        "weight": 1.0,
+        "rationale": "Leading farm and construction equipment maker benefiting from strong agricultural markets and infrastructure projects, with a focus on automation.",
+        "company_description": "Deere & Company manufactures agricultural, construction, and forestry machinery, and provides related financial services."
+    }
+]

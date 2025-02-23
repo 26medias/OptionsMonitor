@@ -31,8 +31,10 @@ class StockData {
      * @returns {{ multiplier: number, timespan: string }}
      */
     _parseTimeframe(timeframe) {
+        //console.log("_parseTimeframe", timeframe)
         const parts = timeframe.split(' ');
-        const multiplier = parseInt(parts[0], 10) || 1;
+        return { multiplier:parts[0], timespan:parts[1] };
+        /*const multiplier = parseInt(parts[0], 10) || 1;
         const unit = (parts[1] || 'minute').toLowerCase();
 
         let timespan;
@@ -46,7 +48,7 @@ class StockData {
             timespan = 'minute';
         }
 
-        return { multiplier, timespan };
+        return { multiplier, timespan };*/
     }
 
     /**
@@ -134,6 +136,7 @@ class StockData {
      * @returns {Promise<Object>} - { [ticker]: Array of data }
      */
     async get(tickers, timeframe, sinceDate = new Date(), refresh = true) {
+        const scope = this;
         if (!Array.isArray(tickers)) {
             tickers = [tickers];
         }
@@ -141,31 +144,31 @@ class StockData {
         const results = {};
         const stack = new pstack({
             async: true,
-            batch: 5,
             progress: tickers.length > 1 ? "Downloading the data..." : false
         });
 
         tickers.forEach(ticker => {
-            stack.add(async (done) => {
+            stack.add(async function(done) {
                 try {
                     let data = [];
-                    const cachedData = this._readCache(ticker, timeframe);
+                    const cachedData = scope._readCache(ticker, timeframe);
 
                     if (!refresh && cachedData) {
                         // Load only from cache (filter by sinceDate)
                         data = cachedData.filter(item => new Date(item.timestamp) >= sinceDate);
                     } else {
                         // Fetch fresh data from API
-                        data = await this._fetchData(ticker, timeframe, sinceDate);
-                        this._writeCache(ticker, timeframe, data);
+                        data = await scope._fetchData(ticker, timeframe, sinceDate);
+                        scope._writeCache(ticker, timeframe, data);
                     }
                     
                     results[ticker] = data;
+                    done();
                 } catch (err) {
                     console.error('Error in get() for', ticker, timeframe, err);
                     results[ticker] = [];
+                    done();
                 }
-                done();
             });
         });
 

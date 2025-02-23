@@ -1,6 +1,13 @@
 const Monitor = require('./Monitor');
 const fs = require('fs');
 const { table } = require('table');
+const argsParser = require('args')
+
+argsParser
+.option('refresh', 'refresh the data')
+.option('ticker', 'ticker')
+
+const args = argsParser.parse(process.argv)
 
 const data_dir = "./data/snapshot"
 
@@ -22,7 +29,7 @@ const assembleData = (data) => {
     const date = indicators[indicators.length-1].timestamp;
     const last = indicators[indicators.length-1];
 
-    let rows = []
+    let rows = [];
     rows.push([
         '',
         '',
@@ -171,4 +178,4 @@ const main = async (ticker, refresh=true) => {
     //console.log(data);
 }
 
-main("INTC", false);
+main(args.ticker, args.refresh);

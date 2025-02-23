@@ -103,7 +103,16 @@ class RedditTracker {
 
         // Find the item by ticker
         const found = data.find(
-            (item) => item.ticker && item.ticker.toLowerCase() === ticker.toLowerCase()
+            (item) => {
+                try {
+                    return item.ticker && item.ticker.toLowerCase() === ticker.toLowerCase()
+                }
+                catch (e) {
+                    console.log(e)
+                    console.log(item)
+                    return false;
+                }
+            }
         );
         return found || null;
     }
