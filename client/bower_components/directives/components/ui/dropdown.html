@@ -1,0 +1,14 @@
+<div class="ui-dropdown" tabindex="-1" ng-click="main.open()" ng-blur="main.close()">
+	<div class="label">
+		<span class="{{icon}}" ng-if="icon"></span>
+		{{label||main.selected.label||'Please select an option'}}
+		<span class="fas fa-angle-down"></span>
+	</div>
+	<div class="dropdown">
+		<div ng-if="main.opened">
+			<div ng-repeat="item in values" ng-click="main.select(item, true)" ng-class="{selected:main.selected.value==item.value}">
+				{{item.label}}
+			</div>
+		</div>
+	</div>
+</div>

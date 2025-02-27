@@ -1,0 +1,12 @@
+{
+	"name": "app",
+	"version": "1.0.0",
+	"dependencies":	{
+		"ftl-framework":		"latest",
+		"ftl-encryption":		"latest",
+		"simplepicker":			"latest"
+	},
+	"main": [
+		"app.js"
+	]
+}

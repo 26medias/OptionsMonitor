@@ -1,0 +1,9 @@
+{
+	"name": "marked",
+	"version": "1.0.0",
+	"dependencies":	{
+	},
+	"main": [
+		"marked.js"
+	]
+}

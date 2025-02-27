@@ -1,0 +1,5 @@
+﻿<div class="ui-toggles">
+    <div ng-repeat="item in options" class="ui-toggles__item" ng-click="tabs.select(item.value)" ng-class="{'ui-toggles__item--active': tabs.is(item.value)}">
+        {{item.label}}
+    </div>
+</div>

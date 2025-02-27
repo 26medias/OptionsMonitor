@@ -1,0 +1,212 @@
+<div class="ui-scans">
+    <div class="ui-scans__settings">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        Color Theme
+                    </td>
+                    <td>
+                        <div ui-toggles options="main.themeToggles" active="main.backgroundTheme"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Sorting
+                    </td>
+                    <td>
+                        <div ui-toggles options="main.sortingToggles" active="main.sorting"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Filter
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="ui-scans__container">
+        <div ng-repeat="item in main.data" class="ui-scans__scan" style="background-color:{{main.getCardColor(item)}}">
+            <div class="ui-scans__scan__header">
+                <div class="ui-scans__scan__header__ticker">
+                    {{item.ticker}}
+                </div>
+                <div class="ui-scans__scan__header__price">
+                    ${{item.minute.close}}
+                </div>
+            </div>
+            <div class="ui-scans__scan__container">
+                <div class="ui-scans__scan__transforms">
+                    <h3>Context ({{item.hour.timestamp|timeago}})</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hour</th>
+                                <th>Day</th>
+                                <th>Week</th>
+                                <th>Month</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="background-color:{{gainColorAt(item.changes.hour)}}">{{item.changes.hour|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.day)}}">{{item.changes.day|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.week)}}">{{item.changes.week|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.month)}}">{{item.changes.month|number:2}}%</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:{{gainColorAt(item.changes.hour)}}">${{item.hour_prev.close|number:2}}</td>
+                                <td style="background-color:{{gainColorAt(item.changes.day)}}">${{item.day_prev.close|number:2}}</td>
+                                <td style="background-color:{{gainColorAt(item.changes.week)}}">${{item.week_prev.close|number:2}}</td>
+                                <td style="background-color:{{gainColorAt(item.changes.month)}}">${{item.month_prev.close|number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ui-scans__scan__transforms">
+                    <h3>Market Cycle</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="background-color:{{oscColorAt(item.day.marketcycle)}}">{{item.day.marketcycle|number:2}}</td>
+                                <td style="background-color:{{oscColorAt(item.week.marketcycle)}}">{{item.week.marketcycle|number:2}}</td>
+                                <td style="background-color:{{oscColorAt(item.month.marketcycle)}}">{{item.month.marketcycle|number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:{{oscColorAt(item.MarketCycleShort)}}" ng-class="{border: main.sorting=='MarketCycleShort'}">{{item.MarketCycleShort|number:2}}</td>
+                                <td></td>
+                                <td style="background-color:{{oscColorAt(item.MarketCycleLong)}}" ng-class="{border: main.sorting=='MarketCycleLong'}">{{item.MarketCycleLong|number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ui-scans__scan__transforms">
+                    <h3>RSI</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="background-color:{{oscColorAt(item.day.rsi)}}">{{item.day.rsi|number:2}}</td>
+                                <td style="background-color:{{oscColorAt(item.week.rsi)}}">{{item.week.rsi|number:2}}</td>
+                                <td style="background-color:{{oscColorAt(item.month.rsi)}}">{{item.month.rsi|number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="ui-scans__scan__container">
+                <div class="ui-scans__scan__option">
+                    <h3>Options</h3>
+                    <table ng-if="item.option">
+                        <tbody>
+                            <tr>
+                                <td>Break Even</td>
+                                <td>${{main.calculateBreakEvenPrice(item.option.strike, item.option.pricePerContract)|number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>Break Even %</td>
+                                <td>{{(main.calculateBreakEvenPrice(item.option.strike, item.option.pricePerContract)-item.minute.close)/item.minute.close*100|number:2}}%</td>
+                            </tr>
+                            <tr>
+                                <td>Strike</td>
+                                <td>${{item.option.strike|number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>Strike %</td>
+                                <td>{{item.option.percentAboveStrike|number:2}}%</td>
+                            </tr>
+                            <tr>
+                                <td>Cost Penalty</td>
+                                <td style="background-color:{{pricePenaltyColorAt(item.option.pricePerContract/item.minute.close)}}">x{{item.option.pricePerContract/item.minute.close|number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cost</td>
+                                <td style="background-color:{{optionCostColorAt(item.option.pricePerContract)}}">${{item.option.pricePerContract|number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>Expires in</td>
+                                <td>{{item.option.expireIn}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="ui-scans__scan__container">
+                <div class="ui-scans__scan__option">
+                    <h3>Reddit</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Rank</td>
+                                <td>
+                                    {{item.reddit.rank || '-'}}
+                                    <span ng-if="item.reddit.rank">({{item.changes.reddit_rank}})</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mentions</td>
+                                <td>
+                                    {{item.reddit.mentions || '-'}}
+                                    <span ng-if="item.reddit.rank">({{item.changes.reddit_mentions}})</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Upvotes</td>
+                                <td>{{item.reddit.upvotes || '-'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="ui-scans__scan__container">
+                <div class="ui-scans__scan__option">
+                    <h3>News</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Count</td>
+                                <td>
+                                    {{item.news.length || '-'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-scans__info">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Minute</th>
+                    <th>Hours</th>
+                    <th>Day</th>
+                    <th>Week</th>
+                    <th>Month</th>
+                    <th>Options</th>
+                    <th>Reddit</th>
+                    <th>News</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td ng-class="{'active': main.refreshSettings.refreshMinute}" ng-click="main.toggleRefreshSettings('refreshMinute')">{{main.info.refreshed_minute|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshHour}" ng-click="main.toggleRefreshSettings('refreshHour')">{{main.info.refreshed_hour|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshDay}" ng-click="main.toggleRefreshSettings('refreshDay')">{{main.info.refreshed_day|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshWeek}" ng-click="main.toggleRefreshSettings('refreshWeek')">{{main.info.refreshed_week|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshMonth}" ng-click="main.toggleRefreshSettings('refreshMonth')">{{main.info.refreshed_month|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshOptions}" ng-click="main.toggleRefreshSettings('refreshOptions')">{{main.info.refreshed_options|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshReddit}" ng-click="main.toggleRefreshSettings('refreshReddit')">{{main.info.refreshed_reddit|timeago}}</td>
+                    <td ng-class="{'active': main.refreshSettings.refreshNews}" ng-click="main.toggleRefreshSettings('refreshNews')">{{main.info.refreshed_news|timeago}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="button --medium --default" ng-click="main.refresh()">
+            <span class="fas fa-spinner" ng-class="{'fa-spin': main.refreshLoading}"></span> Refresh
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+﻿<div class="ui-data-share">
+    <div class="ui-data-share__title">
+        {{main.title}}
+    </div>
+    <div class="ui-data-share__text">
+        <input class="ui-data-share__text__input" type="text" ng-model="main.url" />
+        <div class="ui-data-share__text__btn" ng-class="{active: main.copied}" id="cp-{{main.id}}" ng-click="main.copy()">
+            <span ng-if="!main.copied"><span class="fas fa-copy"></span> Copy URL</span>
+            <span ng-if="main.copied"><span class="fas fa-check"></span> Copied to clipbord</span>
+        </div>
+    </div>
+</div>

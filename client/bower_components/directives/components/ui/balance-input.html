@@ -1,0 +1,23 @@
+﻿<div class="balance-input">
+    <div class="balance-input__field">
+        <div class="balance-input__max" ng-click="main.setMax()" ng-if="main.value < main.balance">
+            Max
+        </div>
+        <div class="balance-input__input">
+            <input type="number" ng-model="main.value" placeholder="0.0" ng-keyup="main.onInputChange()" ng-readonly="main.readonly" />
+        </div>
+    </div>
+    
+    <div class="balance-input__control">
+        <div class="balance-input__slider" ng-if="main.balance!==false">
+            <input class="dark-range" type="range" name="" min="0" max="100" step="any" ng-model="main.percent" ng-input-change="main.onPctChange()"></input>
+            <span class="balance-input__slider__pct" ng-class="{'--right':main.percent<=50, '--left':main.percent>50}">{{main.percent|number:2}}%</span>
+        </div>
+        <div class="balance-input__balance" ng-if="main.balance!==false">
+            {{main.balance|number:4}} BNB
+        </div>
+        <div class="balance-input__balance" ng-if="main.balance==false">
+            <span class="fas fa-spin fa-sync-alt"></span>
+        </div>
+    </div>
+</div>

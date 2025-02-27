@@ -1,0 +1,12 @@
+<div class="token-list">
+	<input type="text" ng-model="main.query" placeholder="Enter a token address" class="token-list__input" />
+	<div class="loading" ng-if="main.loading">
+		<span class="fas fa-spin fa-sync-alt"></span> loading...
+	</div>
+	<div class="token-list__results" ng-if="!main.loading">
+		<div ng-repeat="item in main.tokens" ng-click="onSelect(item)">
+			{{item.name}} ({{item.symbol}})
+		</div>
+	</div>
+	<!--<pre>{{main|json}}</pre>-->
+</div>

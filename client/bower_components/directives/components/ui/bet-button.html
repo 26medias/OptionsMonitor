@@ -1,0 +1,41 @@
+﻿<div class="bet-button">
+    <!-- Button Display -->
+    <!-- No Bets -->
+    <div class="bet-button__button --{{main.direction}}" ng-if="state.is_confirmed(bet) && (!state.has_bet(bet) || (state.has_bet(bet) && bet.user_bet.direction!=main._direction))" ng-class="{'--disabled': state.has_bet(bet) && bet.user_bet.direction!=main._direction}">
+        <span>
+            <span class="fas fa-caret-down" ng-if="main.direction=='down' && !bet.loading"></span>
+            <span class="fas fa-caret-up" ng-if="main.direction=='up' && !bet.loading"></span>
+            <span class="fas fa-spin fa-spinner" ng-if="bet.loading"></span>
+            Bet {{main.direction}}
+        </span>
+    </div>
+    <!-- Has Bets -->
+    <div class="bet-button__button --{{main.direction}}" ng-if="state.has_bet(bet) && bet.user_bet.direction==main._direction">
+        <span>
+            <span class="fas fa-spin fa-spinner" ng-if="bet.loading"></span>
+            <span class="fas fa-check" ng-if="!bet.loading"></span>
+            {{main.weiToEther(bet.user_bet.amount, 18)|number:4}} BNB
+        </span>
+    </div>
+    <!-- Hover panel -->
+    <div class="bet-button__hover" ng-if="!state.has_bet(bet)">
+        <div class="--{{main.direction}}">
+            <div class="bet-button__hover__input">
+                <div ui-balance-input amount="main.value"></div>
+            </div>
+            <div class="bet-button__hover__confirm">
+                <div class="button--block" ng-click="main.bet()" ng-class="{disabled:!main.value||bet.loading||main.weiToEther(main.value, 18)==0}">
+                    <span ng-if="!bet.loading">
+                        Bet {{main.weiToEther(main.value, 18)}} BNB
+                    </span>
+                    <span ng-if="bet.loading">
+                        <span class="fas fa-spin fa-spinner"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <small ng-if="bet['odds_'+main.direction]">(x{{bet['odds_'+main.direction]|number:2}} payout)</small>
+    </div>
+</div>

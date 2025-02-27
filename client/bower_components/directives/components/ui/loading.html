@@ -1,0 +1,8 @@
+﻿<div class="ui-loading">
+	<div class="icon">
+		<span class="fas fa-sync-alt fa-spin"></span>
+	</div>
+	<div class="progress" ng-if="min && max">
+		{{min}}/{{max}} - {{max/min*100|number:0}}%
+	</div>
+</div>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Scanner</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,800&display=swap" rel="stylesheet">
+		
+		<script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+		<!--<script src="https://kit.fontawesome.com/69d2da9f18.js" crossorigin="anonymous"></script>-->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.0-rc.0/web3.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+		<script src="https://cdn.rawgit.com/fnando/sparkline/master/dist/sparkline.js"></script> <!-- https://codepen.io/fnando/pen/KyZLLV -->
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Chicle&family=Lexend:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&family=Vibur&display=swap');
+		</style>
+		<link href="/ui.css" rel="stylesheet" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://rounds.prospector.finance/">
+		<meta property="og:title" content="Round: Bet on the direction of prices & Earn!">
+		<meta property="og:description" content="Bet on the direction on multiple pairs, earn 2% of all bets when you create your own round!">
+		<meta property="og:image" content="https://rounds.prospector.finance/logo.png">
+		
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://rounds.prospector.finance/">
+		<meta property="twitter:title" content="Round: Bet on the direction of prices & Earn!">
+		<meta property="twitter:description" content="Bet on the direction on multiple pairs, earn 2% of all bets when you create your own round!">
+		<meta property="twitter:image" content="https://rounds.prospector.finance/logo.png">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	</head>
+	
+	<body ng-controller="ftl" style="overflow:hidden;">
+		
+		<div app-main></div>
+		
+		<script type="text/javascript">
+			window._csconf	= {ftl:json:csconf};
+		</script>
+		
+		{ftl:include:js}
+	</body>
+</html>

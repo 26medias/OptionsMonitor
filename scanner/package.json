@@ -1,0 +1,24 @@
+{
+  "name": "optionsmonitor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "args": "^5.0.3",
+    "axios": "^1.7.9",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "humanize-duration": "^3.32.1",
+    "pngjs": "^7.0.0",
+    "progress": "^2.0.3",
+    "pstack": "^0.1.5",
+    "table": "^6.9.0",
+    "underscore": "^1.13.7"
+  }
+}

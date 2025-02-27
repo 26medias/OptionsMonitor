@@ -1,0 +1,19 @@
+﻿<div class="ui-address">
+    <div class="ui-address__main">
+        <div class="ui-address__address">
+            {{uiAddress|shortAddr}}
+        </div>
+        <div class="ui-address__btn" id="cp-{{main.id}}" ng-click="main.copy()">
+            <span class="fas fa-clone"></span>
+        </div>
+        <a class="ui-address__btn" href="https://bscscan.com/token/{{uiAddress}}" target="_blank">
+            <span class="fas fa-up-right-from-square"></span>
+        </a>
+        <div class="ui-address__btn" ng-click="main.explore()">
+            <span class="fas fa-search"></span>
+        </div>
+    </div>
+    <div class="ui-address__metas" ng-if="metas.name">
+        {{metas.name}} ({{metas.symbol}})
+    </div>
+</div>

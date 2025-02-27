@@ -1,0 +1,11 @@
+{
+	"name": "crypto",
+	"version": "1.0.0",
+	"main": [
+		"aes.js",
+		"jsonformatter.js"
+	],
+	"dependencies":	{
+		"jquery":		"latest"
+	}
+}

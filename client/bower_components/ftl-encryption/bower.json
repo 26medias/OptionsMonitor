@@ -1,0 +1,12 @@
+{
+	"name": "ftl-encryption",
+	"version": "0.0.1",
+	"dependencies":	{
+		"ftl-framework":	"latest",
+		"ftl-ng-auth":		"latest",
+		"crypto":			"latest"
+	},
+	"main": [
+		"ftl-encryption.js"
+	]
+}

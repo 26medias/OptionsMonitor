@@ -1,0 +1,38 @@
+{
+	"name": "directives",
+	"version": "1.0.0",
+	"dependencies":	{
+		"app":					"latest",
+		"arbiter":				"latest",
+		"moment":				"latest",
+		"md5":					"latest",
+		"SHA-1":				"latest",
+		"marked":				"latest",
+		"angular-ui-ace":		"latest",
+		"gradient":				"latest",
+		"ng-json-explorer":		"latest",
+		"ua-parser":			"latest",
+		"levenshtein":			"latest",
+		"Interface":			"latest",
+		"localStorageDB":		"latest",
+		"Gradient":				"latest"
+	},
+	"main": [
+		"angular-init.js",
+		"components/events/events.js",
+		"components/helpers/filters.js",
+		"components/helpers/helpers.js",
+		"components/ui/ui.js",
+		"components/app.js",
+		"components/static/home.js",
+		"components/static/roadmap.js",
+		"components/scans/scans.js",
+
+		"services/core.js",
+		"services/db.js"
+	],
+	"cdn-upload": [
+		"components",
+		"images"
+	]
+}

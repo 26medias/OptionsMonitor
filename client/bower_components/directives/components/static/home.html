@@ -1,0 +1,87 @@
+<div class="ui-home">
+    <div class="ui-home__title">
+        <div class="ui-home__title__title">
+            Rounds
+        </div>
+        <div class="ui-home__title__subtitle">
+            <strong>Bet on the direction of multiple pairs</strong><br />
+            Join any round, or create your own round and earn 2% of any bets placed!<br />
+            Earn 1% of all the bets placed by users you refer, <strong>for ever</strong>!
+        </div>
+        <div class="ui-home__title__logo">
+            <img src="./logo.png" />
+        </div>
+    </div>
+    
+    <div class="ui-title">
+        Start Exploring For Free!
+    </div>
+    
+    <div class="ui-page-navs">
+        <div class="ui-page-navs__item">
+            <div class="ui-page-navs__item__title">
+                <span class="fas fa-rocket"></span> Find the latest pairs
+            </div>
+            <div class="ui-page-navs__item__body">
+                We detect & analyze pairs as they are created.<br />
+                Find the next moonshot token before it takes off!
+            </div>
+            <div class="ui-page-navs__item__btn">
+                <div class="button" ng-click="nav.goto('/pairs/latest/')">
+                    <span class="fas fa-angle-right"></span> Go
+                </div>
+            </div>
+        </div>
+        <div class="ui-page-navs__item">
+            <div class="ui-page-navs__item__title">
+                <span class="fas fa-code"></span> Investigate any Token
+            </div>
+            <div class="ui-page-navs__item__body">
+                Liquidity Pool, Metadata, Source Code, ABI, Transactions, Owner, ... <br />
+                Investigate any token or smart contract.
+            </div>
+            <div class="ui-page-navs__item__btn">
+                <div class="button" ng-click="nav.goto('/investigator/')">
+                    <span class="fas fa-angle-right"></span> Go
+                </div>
+            </div>
+        </div>
+        <div class="ui-page-navs__item">
+            <div class="ui-page-navs__item__title">
+                <span class="fas fa-user-secret"></span> Spy on any Wallet
+            </div>
+            <div class="ui-page-navs__item__body">
+                Balance, portfolio, transactions...<br />
+                Spy on any wallet!
+            </div>
+            <div class="ui-page-navs__item__btn">
+                <div class="button" ng-click="nav.goto('/stalker/portfolio/')">
+                    <span class="fas fa-angle-right"></span> Go
+                </div>
+            </div>
+        </div>
+        <div class="ui-page-navs__item">
+            <div class="ui-page-navs__item__title">
+                <span class="fas fa-wallet"></span> Track your portfolio
+            </div>
+            <div class="ui-page-navs__item__body">
+                Keep track of your portfolio.<br />
+                Check your assets, balances, transactions & transfers.
+            </div>
+            <div class="ui-page-navs__item__btn">
+                <div class="button" ng-click="nav.goto('/me/portfolio')" ng-if="auth.address">
+                    <span class="fas fa-angle-right"></span> Go
+                </div>
+                <div class="button" ng-click="nav.goto('/me/portfolio', true)" ng-if="!auth.address">
+                    <span class="fas fa-unlock"></span> Connect Metamask
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="ui-title space-top">
+        Prospector's Roadmap
+    </div>
+    <div ui-roadmap type="small"></div>
+</div>

@@ -1,0 +1,17 @@
+﻿<div class="ui-tags" ng-blur="ui.onBlur()">
+	<span class="placeholder" ng-if="placeholder && !ui._active && (!uiTags || uiTags.length==0)">{{placeholder}}</span>
+	<span class="tag no-ellipsis" ng-repeat="item in uiTags" style="margin:2px;">
+		<span class="label">{{item.label}}</span>
+		<span class="action" ng-click="ui.remove(item)">
+			<span class="fas fa-times"></span>
+		</span>
+	</span>
+	<input class="ignore" type="text" ng-model="ui.buffer" ng-enter="ui.create()" style="width:{{ui.getInputWidth()}}px" />
+	<div>
+		<div class="ui-list" ng-if="ui.buffer.length>0">
+			<div ng-repeat="item in ui.tags|orderBy:'label'" text="item" ng-click="ui.select(item)" ng-class="{active:ui.selected(item)}">
+				{{item.label}}
+			</div>
+		</div>
+	</div>
+</div>

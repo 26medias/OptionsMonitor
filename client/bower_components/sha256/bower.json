@@ -1,0 +1,9 @@
+{
+	"name": "sha-256",
+	"github": "https://github.com/Caligatio/jsSHA",
+	"version": "1.0.0",
+	"dependencies":	{},
+	"main": [
+		"sha-256.js"
+	]
+}

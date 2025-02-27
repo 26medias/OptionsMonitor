@@ -1,0 +1,20 @@
+﻿<div>
+	<ul class="ui-pagination" ng-if="uiPagination.pages>0">
+		<li ng-class="{disabled:uiPagination.page<=0}" ng-click="pagination.first()" ng-disabled="uiPagination.page<=0">
+			<span class="fa fa-angle-double-left"></span>
+		</li>
+		<li ng-class="{disabled:uiPagination.page<=0}" ng-click="pagination.previous()" ng-disabled="uiPagination.page<=0">
+			<span class="fa fa-angle-left"></span>
+		</li>
+		<li ng-repeat="pn in pagination.pageArray" ng-class="{active:pn==uiPagination.page+1}"ng-click="onPageChange(pn-1)">
+			{{pn}}
+		</li>
+		<li ng-class="{disabled:uiPagination.page>=uiPagination.pages}" ng-click="pagination.next()">
+			<span class="fa fa-angle-right"></span>
+		</li>
+		<li ng-class="{disabled:uiPagination.page>=uiPagination.pages}" ng-click="pagination.last()">
+			<span class="fa fa-angle-double-right"></span>
+		</li>
+	</ul>
+	<!--<pre>{{pagination|json}}</pre>-->
+</div>

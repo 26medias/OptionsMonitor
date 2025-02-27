@@ -1,0 +1,9 @@
+{
+	"name": "Gradient",
+	"version": "1.0.0",
+	"dependencies":	{
+	},
+	"main": [
+		"Gradient.js"
+	]
+}

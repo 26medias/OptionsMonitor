@@ -1,0 +1,38 @@
+﻿<div class="form-box" ng-if="!metamask.address">
+	<div class="form-box__header">
+		Connect with Metamask and start betting!
+	</div>
+	<div class="form-box__form">
+		<div class="form-box__form__form">
+			<div class="form-box__form__form__item">
+				<div class="form-box__form__form__item__label">
+					Connect now!
+				</div>
+				<div class="form-box__form__form__item__input">
+					<span class="button" ng-click="metamask.connect()">
+						<span class="logo-container">
+							<img src="/metamask.png" class="--l" />
+							<span>
+								Connect Metamask to play
+							</span>
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="form-box__form__form__item">
+				<div class="form-box__form__form__item__label">
+					Don't have Metamask?
+				</div>
+				<div class="form-box__form__form__item__input">
+					<a href="https://metamask.io/" target="_blank">https://metamask.io/</a><br /><br />
+					Install, connect, start betting!
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-box__sub" >
+		Bet on the direction of the price. If the price moves in the direction of your bet by the time the round ends, you win up to 5 times your bet!<br />
+		Create a betting round and earn 2% of all bets made!<br />
+		Earn 1% of all bets made by any user you refer for the entire lifetime of their account.
+	</div>
+</div>

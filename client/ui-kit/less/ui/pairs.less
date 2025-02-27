@@ -1,0 +1,178 @@
+.query-filter {
+    
+
+    &__preview {
+        display:    flex;
+        flex-flow:	row wrap;
+        gap:        10px;
+
+        &__filter {
+            display:                grid;
+            grid-template-areas: 
+                "key op value delete";
+            background-color:       #ffffff;
+            color:                  @text_dark_3;
+            font-size:              11px;
+            font-weight:            300;
+            border-radius:          10px;
+            padding:                5px 10px;
+
+            & > div {
+                padding:            0 2px;
+            }
+        
+            &__key {
+                grid-area:              key;
+                justify-self:           end;
+                align-self:             center;
+            }
+            &__op {
+                grid-area:              op;
+                justify-self:           center;
+                align-self:             center;
+            }
+            &__value {
+                grid-area:              value;
+                justify-self:           start;
+                align-self:             center;
+            }
+            &__delete {
+                grid-area:              delete;
+                justify-self:           end;
+                align-self:             center;
+                color:                  @text_dark_4;
+                &:hover {
+                    color:              @text_dark;
+                }
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            gap:            5px;
+            &__filter {
+                font-size:   9px;
+                padding:     3px 7px;
+            }
+        }
+    }
+
+    &__editor {
+        & > table {
+            background-color:   #ffffff;
+            box-shadow:         0 5px 25px rgba(197, 203, 250, 0.5);
+            
+            & > thead {
+                & > tr {
+                    & > th {
+                        font-size:   11px;
+                        font-weight: 600;
+                        padding:     2px;
+                        color:       #616161;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+            & > tbody {
+                & > tr {
+                    & > td {
+                        font-size:  12px;
+                        font-weight: 400;
+                        padding:    2px;
+                        color:      #424242;
+                        text-align: left;
+                        &:first-child {
+                            border-radius:  10px 0 0 10px;
+                        }
+                        &:last-child {
+                            border-radius:  0 10px 10px 0;
+                        }
+                    }
+                    &:hover {
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+/*.pairs-table {
+    & > table {
+        & > thead {
+            background-color:   #0288D1;
+            & > tr {
+                & > th {
+                    font-size:  12px;
+                    font-weight: 600;
+                    padding:    5px;
+                    color:      #ffffff;
+                }
+            }
+        }
+        & > tbody {
+            & > tr {
+                & > td {
+                    font-size:  11px;
+                    font-weight: 400;
+                    padding:    5px;
+                }
+            }
+        }
+    }
+}
+
+.query-filter {
+    & > table {
+        & > thead {
+            background-color:   #0288D1;
+            & > tr {
+                & > th {
+                    font-size:  12px;
+                    font-weight: 600;
+                    padding:    5px;
+                    color:      #ffffff;
+                }
+            }
+        }
+        & > tbody {
+            & > tr {
+                & > td {
+                    font-size:  11px;
+                    font-weight: 400;
+                    padding:    5px;
+                }
+            }
+        }
+    }
+}
+
+.wallet-portfolio {
+    & > table {
+        & > thead {
+            background-color:   #0288D1;
+            & > tr {
+                & > th {
+                    font-size:  12px;
+                    font-weight: 600;
+                    padding:    5px;
+                    color:      #ffffff;
+                }
+            }
+        }
+        & > tbody {
+            & > tr {
+                & > td {
+                    font-size:  11px;
+                    font-weight: 400;
+                    padding:    5px;
+                }
+            }
+        }
+    }
+}
+*/

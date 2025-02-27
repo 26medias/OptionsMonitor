@@ -1,0 +1,5 @@
+{
+	"verbose": true,
+	"ignore": ["*.git","bower_components/*","app/www/views/*", "version.json", "version-history.json", "race-schedule.json", "slug.json", "temp/*", "data/*.json"],
+	"execMap": {}
+}
