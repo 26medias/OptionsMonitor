@@ -23,6 +23,11 @@ handler.on('/scanner/filter', function(params, callback, req, res, core) {
     core.scanner.filter(params, callback);
 });
 
+// Charts
+handler.on('/charts/charts', function(params, callback, req, res, core) {
+    core.charts.charts(params, callback);
+});
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

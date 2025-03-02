@@ -70,8 +70,10 @@
 
 		<div ui-loading min="loader.loaded" max="loader.total" ng-if="loader.loading()"></div>
 
+		<!-- CONTENT -->
 		<div ng-if="!loader.loading()">
 			<div ui-scans ng-if="nav.parts[1]=='scans' || nav.parts[1]=='home'"></div>
+			<div ui-charts ng-if="nav.parts[1]=='charts' || nav.parts[1]=='home'"></div>
 			
 			<div ui-home ng-if="nav.parts[1]=='__home'"></div>
 		</div>
@@ -91,80 +93,28 @@
 		<div class="layout__main__sidebar__body">
 			<div class="sidebar-menu">
 				
-				<div class="sidebar-menu__option" ng-click="nav.goto('/home')" ng-class="{selected:nav.is('/home')}">
+				<div class="sidebar-menu__option" ng-click="nav.goto('/scans')" ng-class="{selected:nav.is('/scans')}">
 					<div>
 						<div>
 							<span class="fas fa-home"></span>
 						</div>
 						<div>
-							Home
+							Scans
 						</div>
 					</div>
 				</div>
 				
-				<div class="sidebar-menu__option" ng-click="nav.goto('/abi')" ng-class="{selected:nav.is('/abi')}" ng-if="false">
+				<div class="sidebar-menu__option" ng-click="nav.goto('/charts')" ng-class="{selected:nav.is('/charts')}">
 					<div>
 						<div>
-							<span class="fas fa-code"></span>
+							<span class="fas fa-home"></span>
 						</div>
 						<div>
-							ABI Explorer
+							Charts
 						</div>
 					</div>
 				</div>
-
-				<div class="sidebar-menu__title" ng-click="main.toggle('betting')">
-					<div>
-						<div>
-							Betting
-						</div>
-						<div>
-							<span class="fas fa-angle-down" ng-if="main.visible('betting')"></span>
-							<span class="fas fa-angle-right" ng-if="!main.visible('betting')"></span>
-						</div>
-					</div>
-				</div>
-				<div class="sidebar-menu__option" ng-click="nav.goto('/rounds')" ng-class="{selected:nav.is('/rounds')}" ng-if="main.visible('betting')">
-					<div>
-						<div>
-							<span class="fas fa-dollar-sign"></span>
-						</div>
-						<div>
-							All Bets
-						</div>
-					</div>
-				</div>
-				<div class="sidebar-menu__option" ng-click="nav.goto('/rounds/'+symbol)" ng-class="{selected:nav.is('/rounds/'+symbol)}" ng-if="false && main.visible('betting')" ng-repeat="symbol in abi.symbols">
-					<div>
-						<div>
-							<img ng-src="https://storage.googleapis.com/rounds_static/icons/128/color/{{main.iconName(symbol)}}.png" class="--xl" />
-						</div>
-						<div>
-							{{symbol}} Bets
-						</div>
-					</div>
-				</div>
-				<div class="sidebar-menu__option" ng-click="nav.goto('/leaderboard')" ng-class="{selected:nav.is('/leaderboard')}" ng-if="false && main.visible('betting')">
-					<div>
-						<div>
-							<span class="fas fa-rocket"></span>
-						</div>
-						<div>
-							Leaderboard
-						</div>
-					</div>
-				</div>
-				<div class="sidebar-menu__option" ng-click="nav.goto('/create')" ng-class="{selected:nav.is('/create')}" ng-if="main.visible('betting')">
-					<div>
-						<div>
-							<span class="fas fa-plus"></span>
-						</div>
-						<div>
-							Create a round & earn
-						</div>
-					</div>
-				</div>
-
+				
 				<div class="sidebar-menu__title" ng-click="main.toggle('user')">
 					<div>
 						<div>

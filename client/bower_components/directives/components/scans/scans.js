@@ -145,6 +145,11 @@
                 min: 200,
                 max: 800
             });
+            $scope.optionStrikeColorAt = gradient.factory({
+                colors: ['#4aa49a', '#4aa49a', '#aaaaaa', '#e26053', '#e26053'],
+                min: 0,
+                max: 20
+            });
             $scope.rankColorAt = gradient.factory({
                 colors: ['#4aa49a', '#4aa49a', '#aaaaaa', '#e26053', '#e26053'],
                 min: 1,
@@ -253,6 +258,9 @@
                     label: 'Option Cost',
                     value: 'option-cost'
                 }, {
+                    label: 'Option Strike',
+                    value: 'option-strike'
+                }, {
                     label: 'Reddit Rank',
                     value: 'reddit-rank'
                 }, {
@@ -294,6 +302,9 @@
                 }, {
                     label: 'Option Cost',
                     value: 'option-cost'
+                }, {
+                    label: 'Option Strike',
+                    value: 'option-strike'
                 }, {
                     label: 'Reddit Rank',
                     value: 'reddit-rank'
@@ -344,7 +355,16 @@
                         break;
                         case "option-cost":
                             $scope.main.data.sort((a, b) => {
+                                if (!a.option) return 1;
+                                if (!b.option) return -1;
                                 return a.option.pricePerContract > b.option.pricePerContract ? 1 : -1;
+                            })
+                        break;
+                        case "option-strike":
+                            $scope.main.data.sort((a, b) => {
+                                if (!a.option) return 1;
+                                if (!b.option) return -1;
+                                return a.option.breakEvenPricePercent > b.option.breakEvenPricePercent ? 1 : -1;
                             })
                         break;
                         case "reddit-rank":
@@ -446,7 +466,11 @@
                         case "MarketCycleShort":
                             return $scope.oscColorAt(item.MarketCycleShort)
                         case "option-cost":
+                            if (!item.option) return $scope.optionCostColorAt(500000);
                             return $scope.optionCostColorAt(item.option.pricePerContract);
+                        case "option-strike":
+                            if (!item.option) return $scope.optionStrikeColorAt(500000);
+                            return $scope.optionStrikeColorAt(item.option.breakEvenPricePercent);
                         case "reddit-rank":
                             return $scope.rankColorAt(item.reddit?.rank || 1000);
                         case "reddit-mentions":
@@ -478,6 +502,11 @@
                                     ...item,
                                     MarketCycleLong: (item.day.marketcycle+item.week.marketcycle+item.month.marketcycle)/3,
                                     MarketCycleShort: (item.day.marketcycle+item.week.marketcycle+(100-item.month.marketcycle))/3,
+                                    option: item.option ? {
+                                        ...item.option,
+                                        breakEvenPrice: $scope.main.calculateBreakEvenPrice(item.option.strike, item.option.pricePerContract),
+                                        breakEvenPricePercent: ($scope.main.calculateBreakEvenPrice(item.option.strike, item.option.pricePerContract)-item.minute.close)/item.minute.close*100,
+                                    } : null,
                                     changes: {
                                         minute: (item.minute.close - item.minute_prev.close)/item.minute.close*100,
                                         hour: (item.hour.close - item.hour_prev.close)/item.hour.close*100,
@@ -488,6 +517,7 @@
                                         reddit_mentions: (item.reddit?.mentions - item.reddit?.mentions_24h_ago) || 0
                                     }
                                 }));
+                                console.log($scope.main.data)
                                 $scope.main.sortData();
                                 
                                 //$scope.main.data = filter_up_day($scope.main.data, [30,50,40])
@@ -523,7 +553,7 @@
                             ...$scope.main.refreshSettings,
                             optionsPercentFromStrike: 5,
                             optionsPercentPerDay: 1,
-                            optionsminDaysAway: 150,
+                            optionsminDaysAway: 60,
                         },
                         callback:	function(response) {
                             console.log(response)

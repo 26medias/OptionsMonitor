@@ -8,12 +8,10 @@
 		"md5":					"latest",
 		"SHA-1":				"latest",
 		"marked":				"latest",
-		"angular-ui-ace":		"latest",
 		"gradient":				"latest",
 		"ng-json-explorer":		"latest",
 		"ua-parser":			"latest",
 		"levenshtein":			"latest",
-		"Interface":			"latest",
 		"localStorageDB":		"latest",
 		"Gradient":				"latest"
 	},
@@ -27,6 +25,7 @@
 		"components/static/home.js",
 		"components/static/roadmap.js",
 		"components/scans/scans.js",
+		"components/charts/charts.js",
 
 		"services/core.js",
 		"services/db.js"

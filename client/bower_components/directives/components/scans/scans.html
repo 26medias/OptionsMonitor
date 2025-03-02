@@ -31,17 +31,19 @@
     </div>
     <div class="ui-scans__container">
         <div ng-repeat="item in main.data" class="ui-scans__scan" style="background-color:{{main.getCardColor(item)}}">
-            <div class="ui-scans__scan__header">
-                <div class="ui-scans__scan__header__ticker">
-                    {{item.ticker}}
-                </div>
-                <div class="ui-scans__scan__header__price">
-                    ${{item.minute.close}}
+            <div class="ui-scans__scan__container --dark">
+                <div class="ui-scans__scan__header">
+                    <div class="ui-scans__scan__header__ticker">
+                        {{item.ticker}}
+                    </div>
+                    <i class="ui-scans__scan__header__price">
+                        ${{item.minute.close}}
+                    </i>
                 </div>
             </div>
             <div class="ui-scans__scan__container">
                 <div class="ui-scans__scan__transforms">
-                    <h3>Context ({{item.hour.timestamp|timeago}})</h3>
+                    <h3>Context <small>({{item.hour.timestamp|timeago}})</small></h3>
                     <table>
                         <thead>
                             <tr>
@@ -53,10 +55,10 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="background-color:{{gainColorAt(item.changes.hour)}}">{{item.changes.hour|number:2}}%</td>
-                                <td style="background-color:{{gainColorAt(item.changes.day)}}">{{item.changes.day|number:2}}%</td>
-                                <td style="background-color:{{gainColorAt(item.changes.week)}}">{{item.changes.week|number:2}}%</td>
-                                <td style="background-color:{{gainColorAt(item.changes.month)}}">{{item.changes.month|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.hour)}}" ng-class="{'border-sort': main.sorting=='hour-change', 'border-theme': main.backgroundTheme=='hour-change'}">{{item.changes.hour|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.day)}}" ng-class="{'border-sort': main.sorting=='day-change', 'border-theme': main.backgroundTheme=='day-change'}">{{item.changes.day|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.week)}}" ng-class="{'border-sort': main.sorting=='week-change', 'border-theme': main.backgroundTheme=='week-change'}">{{item.changes.week|number:2}}%</td>
+                                <td style="background-color:{{gainColorAt(item.changes.month)}}" ng-class="{'border-sort': main.sorting=='month-change', 'border-theme': main.backgroundTheme=='month-change'}">{{item.changes.month|number:2}}%</td>
                             </tr>
                             <tr>
                                 <td style="background-color:{{gainColorAt(item.changes.hour)}}">${{item.hour_prev.close|number:2}}</td>
@@ -77,9 +79,9 @@
                                 <td style="background-color:{{oscColorAt(item.month.marketcycle)}}">{{item.month.marketcycle|number:2}}</td>
                             </tr>
                             <tr>
-                                <td style="background-color:{{oscColorAt(item.MarketCycleShort)}}" ng-class="{border: main.sorting=='MarketCycleShort'}">{{item.MarketCycleShort|number:2}}</td>
+                                <td style="background-color:{{oscColorAt(item.MarketCycleShort)}}" ng-class="{'border-sort': main.sorting=='MarketCycleShort', 'border-theme': main.backgroundTheme=='MarketCycleShort'}">{{item.MarketCycleShort|number:2}}</td>
                                 <td></td>
-                                <td style="background-color:{{oscColorAt(item.MarketCycleLong)}}" ng-class="{border: main.sorting=='MarketCycleLong'}">{{item.MarketCycleLong|number:2}}</td>
+                                <td style="background-color:{{oscColorAt(item.MarketCycleLong)}}" ng-class="{'border-sort': main.sorting=='MarketCycleLong', 'border-theme': main.backgroundTheme=='MarketCycleLong'}">{{item.MarketCycleLong|number:2}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -104,11 +106,7 @@
                         <tbody>
                             <tr>
                                 <td>Break Even</td>
-                                <td>${{main.calculateBreakEvenPrice(item.option.strike, item.option.pricePerContract)|number:2}}</td>
-                            </tr>
-                            <tr>
-                                <td>Break Even %</td>
-                                <td>{{(main.calculateBreakEvenPrice(item.option.strike, item.option.pricePerContract)-item.minute.close)/item.minute.close*100|number:2}}%</td>
+                                <td>${{item.option.breakEvenPrice|number:2}}</td>
                             </tr>
                             <tr>
                                 <td>Strike</td>
@@ -124,7 +122,11 @@
                             </tr>
                             <tr>
                                 <td>Cost</td>
-                                <td style="background-color:{{optionCostColorAt(item.option.pricePerContract)}}">${{item.option.pricePerContract|number:2}}</td>
+                                <td style="background-color:{{optionCostColorAt(item.option.pricePerContract)}}" ng-class="{'border-sort': main.sorting=='option-cost', 'border-theme': main.backgroundTheme=='option-cost'}">${{item.option.pricePerContract|number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>Break Even %</td>
+                                <td style="background-color:{{optionStrikeColorAt(item.option.breakEvenPricePercent)}}" ng-class="{'border-sort': main.sorting=='option-strike', 'border-theme': main.backgroundTheme=='option-strike'}">{{item.option.breakEvenPricePercent|number:2}}%</td>
                             </tr>
                             <tr>
                                 <td>Expires in</td>
@@ -141,14 +143,14 @@
                         <tbody>
                             <tr>
                                 <td>Rank</td>
-                                <td>
+                                <td ng-class="{'border-sort': main.sorting=='reddit-rank' || main.sorting=='reddit-rank-change', 'border-theme': main.backgroundTheme=='reddit-rank' || main.backgroundTheme=='reddit-rank-change'}">
                                     {{item.reddit.rank || '-'}}
                                     <span ng-if="item.reddit.rank">({{item.changes.reddit_rank}})</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Mentions</td>
-                                <td>
+                                <td ng-class="{'border-sort': main.sorting=='reddit-mentions' || main.sorting=='reddit-mentions-change', 'border-theme': main.backgroundTheme=='reddit-mentions' || main.backgroundTheme=='reddit-mentions-change'}">
                                     {{item.reddit.mentions || '-'}}
                                     <span ng-if="item.reddit.rank">({{item.changes.reddit_mentions}})</span>
                                 </td>
@@ -168,7 +170,7 @@
                         <tbody>
                             <tr>
                                 <td>Count</td>
-                                <td>
+                                <td ng-class="{'border-sort': main.sorting=='news-count', 'border-theme': main.backgroundTheme=='news-count'}">
                                     {{item.news.length || '-'}}
                                 </td>
                             </tr>

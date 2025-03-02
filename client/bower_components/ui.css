@@ -2568,8 +2568,14 @@ canvas {
   top: 0;
   left: 0;
 }
-.ui-scans .border {
+.ui-scans td {
+  border: 2px solid transparent;
+}
+.ui-scans .border-sort {
   border: 2px solid #000000;
+}
+.ui-scans .border-theme {
+  border: 2px dashed #006efd;
 }
 .ui-scans__settings {
   background-color: #272735;
@@ -2627,6 +2633,9 @@ canvas {
   display: grid;
   gap: 10px;
 }
+.ui-scans__scan__container.--dark {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .ui-scans__scan__header {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2646,6 +2655,61 @@ canvas {
 }
 .ui-scans__scan__option td:first-child {
   text-align: left;
+}
+.ui-charts {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.ui-charts__container {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+.ui-charts__settings {
+  background-color: #272735;
+  padding: 10px;
+}
+.ui-charts__settings table td {
+  text-align: left;
+}
+.ui-charts__box {
+  background-color: #e26053;
+  border-radius: 10px;
+  padding: 5px;
+  display: grid;
+  gap: 5px;
+}
+.ui-charts__box table {
+  width: 100%;
+}
+.ui-charts__box__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.ui-charts__box__header__ticker {
+  font-weight: 700;
+  text-align: left;
+}
+.ui-charts__box__header__price {
+  text-align: right;
+}
+.ui-charts__box__chart {
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.ui-charts__box__chart img {
+  width: 100%;
+  border-radius: 5px;
 }
 .simplepicker-calender td,
 .simplepicker-calender th {

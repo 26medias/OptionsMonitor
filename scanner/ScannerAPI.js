@@ -2,13 +2,26 @@ const Monitor = require('./Monitor');
 const ObjectFilter = require('./ObjectFilter');
 var Gradient = require('./Gradient');
 const _ = require('underscore');
+const fs = require('fs');
+const path = require('path');
 
 const defaultProject = "./data/dr2025/"
 const gradient = new Gradient();
 
-const MS_HOUR = 1000*60*60;
-const MS_DAY = MS_HOUR*24;
-const MS_WEEK = MS_DAY*7;
+const MS_HOUR = 1000 * 60 * 60;
+const MS_DAY = MS_HOUR * 24;
+const MS_WEEK = MS_DAY * 7;
+
+class FileHelper {
+    static base64Image(filePath) {
+        console.log(">> ", filePath, fs.existsSync(filePath))
+        if (fs.existsSync(filePath)) {
+            const data = fs.readFileSync(filePath);
+            return data.toString('base64');
+        }
+        return null;
+    }
+}
 
 lib = function(core) {
 	return {
@@ -55,6 +68,48 @@ lib = function(core) {
                     data,
                     ...info
                 })
+            }
+        },
+        charts: {
+            charts: async function(options, callback) {
+                options = {
+                    tickers: [],
+                    timeframe: "1 hour",
+                    days: 5,
+                    refresh: true,
+                    ...options
+                }
+                const monitor = new Monitor(options.project || defaultProject);
+                let data = await monitor.stock.get(
+                    options.tickers,
+                    options.timeframe,
+                    new Date(new Date().getTime() - (MS_DAY * options.days)),
+                    options.refresh
+                );
+                data = monitor.applyTransforms(data);
+                const dir = "charts/" + options.timeframe.replace(' ', '_');
+                console.log(dir)
+                const chartFilenames = monitor.generateCharts(data, dir);
+
+                let output = [];
+                let ticker;
+                for (ticker in chartFilenames) {
+                    output.push({
+                        ticker,
+                        chart: FileHelper.base64Image(chartFilenames[ticker])
+                    })
+                }
+
+                /*const tickers = Object.keys(data);
+
+                for (const ticker of tickers) {
+                    const filePath = path.join(dir, `${ticker}.png`);
+                    const base64Str = FileHelper.base64Image(filePath);
+                    if (base64Str) {
+                        output[ticker] = base64Str;
+                    }
+                }*/
+                callback(output);
             }
         }
 	};

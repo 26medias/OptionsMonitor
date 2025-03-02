@@ -529,22 +529,28 @@ class Monitor {
     }
 
     applyTransforms(stockData) {
+        console.log("applyTransforms", stockData)
+        //const scope = this;
         const tickers = Object.keys(stockData);
         tickers.forEach(ticker => {
             let data = stockData[ticker];
-            const MC = new MarketCycle(data.map(item => item.close));
-            const marketcycles = MC.mc(14, 20);
-            const rsi = MC.RSI(14);
-            data = data.map((item, n) => {
-                return {
-                    ...item,
-                    rsi: rsi[n],
-                    marketcycle: marketcycles[n]
-                }
-            })
-            stockData[ticker] = data;
+            stockData[ticker] = this.applyTransform(data);
         })
         return stockData;
+    }
+
+    applyTransform(data) {
+        const MC = new MarketCycle(data.map(item => item.close));
+        const marketcycles = MC.mc(14, 20);
+        const rsi = MC.RSI(14);
+        data = data.map((item, n) => {
+            return {
+                ...item,
+                rsi: rsi[n],
+                marketcycle: marketcycles[n]
+            }
+        })
+        return data
     }
     getMinMax(data) {
         let min = Infinity;
@@ -853,14 +859,17 @@ class Monitor {
     
     generateCharts(data, filepath) {
         const scope = this;
+        let output = {};
         Object.keys(data).forEach(ticker => {
             try {
-                scope.generateChart(`${scope.data_dir}/${filepath}/${ticker}.png`, data[ticker]);
+                const filename = `${scope.data_dir}/${filepath}/${ticker}.png`;
+                scope.generateChart(filename, data[ticker]);
+                output[ticker] = filename;
             } catch(e) {
                 console.log(`Chart error: ${ticker} - ${filepath}`)
             }
         });
-        return;
+        return output;
     }
 }
 
