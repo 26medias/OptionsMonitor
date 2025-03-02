@@ -86,13 +86,13 @@ class StockData {
      * @returns {Promise<Array>}
      */
     async _fetchData(ticker, timeframe, sinceDate) {
-        //console.log(timeframe, sinceDate)
+        console.log(timeframe, sinceDate)
         const { multiplier, timespan } = this._parseTimeframe(timeframe);
         const fromMs = sinceDate.getTime();
         const toMs = Date.now();
 
-        const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${fromMs}/${toMs}?apiKey=${this.apiKey}`;
-        //console.log('Fetching data from', url);
+        const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${fromMs}/${toMs}?limit=50000&adjusted=true&sort=asc&apiKey=${this.apiKey}`;
+        console.log('Fetching data from', url);
 
         try {
             const resp = await axios.get(url);
